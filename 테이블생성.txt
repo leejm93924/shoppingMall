@@ -58,6 +58,7 @@ create table jjim (
 create table cart (
     customer_id varchar(20),
     sangpum_number varchar(20),
+    sangpum_name varchar(30),
     sangpum_count number(2,0),
     sangpum_image varchar(30),
     sangpum_price number(10,0),
