@@ -230,12 +230,14 @@ public class ShoppingDAO {
 		
 	}
 	
-	// 해당 상품에 대한 문의내용을 검색하는 메소드.
-	public AskVO askSearch(String sangpumNumber) throws SQLException {
+	// 해당 상품에 대한 문의 전체를 반환하는 메소드.
+	public ArrayList<AskVO> askSearch(String sangpumNumber) throws SQLException {
 		
 		String sql = "select * from sangpumask"
-				+ "where sangpum_number=?";
+				+ "where sangpum_number=?"
+				+ "order by asking_date desc";
 		
+		ArrayList<AskVO> resultSet = new ArrayList<AskVO>();
 		AskVO result = null;
 		
 		try {
@@ -261,9 +263,10 @@ public class ShoppingDAO {
 			Date date = rs.getDate("asking_date");
 			
 			result = new AskVO(number, askName, asking, secrets, date);
+			resultSet.add(result);
 		}
 		
-		return result;
+		return resultSet;
 	}
 	
 	
