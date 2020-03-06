@@ -302,9 +302,30 @@ public class ShoppingDAO {
 		}
 		
 		return resultSet;
+				
+	}
+	
+	
+	// 회원이 자신의 이메일, 휴대폰번호를 수정하는 메소드
+	public boolean updateCustomer(String id, String newEmail, String newPhone) {
 		
+		String sql = "update customer"
+				+ "set customer_email=?, customer_phone=?"
+				+ "where customer_id=?";
 		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, newEmail);
+			pstmt.setString(2, newPhone);
+			pstmt.setString(3, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 		
+		return true;
 	}
 	
 	
