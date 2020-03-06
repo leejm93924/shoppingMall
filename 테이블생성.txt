@@ -16,6 +16,7 @@ create table sangpum_review (
     review varchar(50),
     reviewer varchar(20),
     review_up number(8,0),
+    review_date date,
     primary key (sangpum_number, reviewer),
     foreign key(sangpum_number) references sangpum(sangpum_number)
 );
@@ -88,5 +89,3 @@ create table manager(
 
 commit;
 
-// 수정작업 테스트
-// 최원준
