@@ -329,4 +329,33 @@ public class ShoppingDAO {
 	}
 	
 	
+	
+	// 배송지 리스트를 넘겨주는 메소드
+	public ArrayList<BaesongjiVO> receiveAddress(String id) throws SQLException {
+		
+		String sql = "select *"
+				+ "from baesongji"
+				+ "where customer_id=?";
+		
+		ArrayList<BaesongjiVO> resultSet = new ArrayList<BaesongjiVO>();
+		BaesongjiVO result = null;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		while(rs.next()) {
+			String customerId = rs.getString("customer_id");
+			String address = rs.getString("customer_address");
+			
+			result = new BaesongjiVO(customerId,address);
+			resultSet.add(result);
+		}
+		return resultSet;
+	}
 }
