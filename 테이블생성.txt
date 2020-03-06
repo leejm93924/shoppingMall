@@ -81,4 +81,6 @@ create table orders (
     foreign key(sangpumnumber) references sangpum(sangpumnumber)
 );
 
+
+
 commit;
