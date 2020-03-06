@@ -59,6 +59,8 @@ create table cart (
     customer_id varchar(20),
     sangpum_number varchar(20),
     sangpum_count number(2,0),
+    sangpum_image varchar(30),
+    sangpum_price number(10,0),
     foreign key(customer_id) references customer(customer_id),
     foreign key(sangpum_number) references sangpum(sangpum_number)
 );
