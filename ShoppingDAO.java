@@ -358,4 +358,35 @@ public class ShoppingDAO {
 		}
 		return resultSet;
 	}
+	
+	// 쿠폰 목록을 넘겨주는 메소드
+	public ArrayList<CouponVO> couponSearch(String id) throws SQLException {
+		
+		String sql = "select * from coupon"
+				+ "where customer_id=?";
+		
+		ArrayList<CouponVO> resultSet = new ArrayList<CouponVO>();
+		CouponVO result = null;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		while(rs.next()) {
+			String number = rs.getString("coupon_number");
+			String type = rs.getString("coupon_type");
+			String discount = rs.getString("discount");
+			String customer_id = rs.getString("customer_id");
+			
+			result = new CouponVO(number,type,discount, customer_id);
+			resultSet.add(result);
+		}
+		
+		return resultSet;
+	}
 }
