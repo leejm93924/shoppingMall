@@ -451,4 +451,33 @@ public class ShoppingDAO {
 		
 		return true;
 	}
+	
+	// 장바구니 목록 전체를 가져오는 메소드.
+	public ArrayList<CartVO> cartCall(String customerId) throws SQLException {
+		
+		String sql = "select * from cart"
+				+ "where customer_id=?"
+				+ "order by sangpum_name";
+		
+		ArrayList<CartVO> resultSet = new ArrayList<CartVO>();
+		CartVO result = null;
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, customerId);
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			String id = rs.getString("customer_id");
+			String number = rs.getString("sangpum_number");
+			String name = rs.getString("sangpum_name");
+			int count = rs.getInt("sangpum_count");
+			String imgsrc = rs.getString("sangpum_image");
+			int price = rs.getInt("sangpum_price");
+			
+			result = new CartVO(id, number, name, count, imgsrc, price);
+			resultSet.add(result);
+		}
+		
+		return resultSet;
+	}
 }
