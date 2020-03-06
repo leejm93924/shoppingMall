@@ -81,7 +81,10 @@ create table orders (
     foreign key(sangpumnumber) references sangpum(sangpumnumber)
 );
 
-
+create table manager(
+    id varchar2(50),
+    passwd varchar2(50)
+);
 
 commit;
 
