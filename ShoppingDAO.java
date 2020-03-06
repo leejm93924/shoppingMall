@@ -410,4 +410,45 @@ public class ShoppingDAO {
 		
 		return resultSet;
 	}
+	
+	// 장바구니에 물건 하나를 담는 메소드
+	public boolean cartAdding(String customerId, String sangpumNumber, int sangpumCount) throws SQLException {
+				
+		String name="";
+		int price=0;
+		String imgsrc="";
+		
+		String sql = "select sangpum_name, sangpum_price, sangpum_image"
+				+ "from sangpum"
+				+ "where sangpum_number=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, sangpumNumber);
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			name = rs.getString("sangpum_name");
+			price = rs.getInt("sangpum_price");
+			imgsrc = rs.getString("sangpum_image");						
+		}
+		
+		sql = "insert into cart values (?,?,?,?,?,?)";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, customerId);
+			pstmt.setString(2, sangpumNumber);
+			pstmt.setString(3, name);
+			pstmt.setInt(4, sangpumCount);
+			pstmt.setString(5, imgsrc);
+			pstmt.setInt(6, price);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
 }
