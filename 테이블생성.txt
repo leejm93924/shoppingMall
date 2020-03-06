@@ -27,8 +27,8 @@ create table sangpum_ask (
     asking varchar(50),
     secrets varchar(10),
     asking_date date,
-    primary key (sangpumnumber, asker),
-    foreign key(sangpumnumber) references sangpum(sangpumnumber)
+    primary key (sangpum_number, asker),
+    foreign key(sangpum_number) references sangpum(sangpum_number)
 );
 
 create table customer (
@@ -52,16 +52,16 @@ create table jjim (
     sangpum_number varchar(20),    
     primary key (customer_id, sangpumnumber),
     foreign key (customer_id) references customer(customer_id),
-    foreign key (sangpumnumber) references sangpum(sangpumnumber)    
+    foreign key (sangpum_number) references sangpum(sangpum_number)    
 );
 
 create table cart (
     customer_id varchar(20),
     sangpum_number varchar(20),
     sangpum_count number(2,0),
-    primary key(customer_id, sangpumnumber),
+    primary key(customer_id, sangpum_number),
     foreign key(customer_id) references customer(customer_id),
-    foreign key(sangpumnumber) references sangpum(sangpumnumber)
+    foreign key(sangpum_number) references sangpum(sangpum_number)
 );
 
 create table coupon (
@@ -79,7 +79,7 @@ create table orders (
     order_name varchar(10),
     customer_address varchar(20),
     order_confirm varchar(10),
-    foreign key(sangpumnumber) references sangpum(sangpumnumber)
+    foreign key(sangpum_number) references sangpum(sangpum_number)
 );
 
 create table manager(
@@ -88,4 +88,3 @@ create table manager(
 );
 
 commit;
-
