@@ -1,0 +1,84 @@
+create table sangpum (
+    sangpum_number varchar(20) primary key,
+    sangpum_name varchar(30),
+    sangpum_price number(10,0),
+    sangpum_jaego number(3,0),
+    sangpum_detail varchar(100),
+    sangpum_click number(8,0),
+    baesong_inform varchar(50),
+    sangpum_category varchar(20),
+    sangpum_image varchar(30)
+);
+
+create table sangpum_review (
+    sangpum_number varchar(20),
+    stars number(2,1),
+    review varchar(50),
+    reviewer varchar(20),
+    review_up number(8,0),
+    primary key (sangpum_number, reviewer),
+    foreign key(sangpum_number) references sangpum(sangpum_number)
+);
+
+create table sangpum_ask (
+    sangpum_number varchar(20),
+    asker varchar(20),
+    asking varchar(50),
+    secrets varchar(10),
+    asking_date date,
+    primary key (sangpumnumber, asker),
+    foreign key(sangpumnumber) references sangpum(sangpumnumber)
+);
+
+create table customer (
+    customer_id varchar(20) primary key,
+    customer_password varchar(20) not null,
+    customer_name varchar(10) not null,
+    customer_birth date,
+    customer_phone varchar(20) not null,
+    customer_email varchar(20)
+);
+
+create table baesongji (
+    customer_id varchar(20),
+    customer_address varchar(20),
+    primary key(customer_id, customer_address),
+    foreign key(customer_id) references customer(customer_id)
+);
+
+create table jjim (
+    customer_id varchar(20),
+    sangpum_number varchar(20),    
+    primary key (customer_id, sangpumnumber),
+    foreign key (customer_id) references customer(customer_id),
+    foreign key (sangpumnumber) references sangpum(sangpumnumber)    
+);
+
+create table cart (
+    customer_id varchar(20),
+    sangpum_number varchar(20),
+    sangpum_count number(2,0),
+    primary key(customer_id, sangpumnumber),
+    foreign key(customer_id) references customer(customer_id),
+    foreign key(sangpumnumber) references sangpum(sangpumnumber)
+);
+
+create table coupon (
+    coupon_number varchar(20) primary key,
+    coupon_type varchar(10),
+    discount varchar(6),
+    customer_id varchar(20),
+    foreign key(customer_id) references customer(customer_id)
+);
+
+create table orders (
+    order_number varchar(10) primary key,
+    sangpum_number varchar(20),
+    order_date date,
+    order_name varchar(10),
+    customer_address varchar(20),
+    order_confirm varchar(10),
+    foreign key(sangpumnumber) references sangpum(sangpumnumber)
+);
+
+commit;
