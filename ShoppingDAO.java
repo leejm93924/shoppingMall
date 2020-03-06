@@ -359,6 +359,27 @@ public class ShoppingDAO {
 		return resultSet;
 	}
 	
+	// 배송지 정보를 변경하는 메소드
+	public boolean baesongjiUpdate(String id, String newBaesongji) {
+		
+		String sql = "update baesongji"
+				+ "set customer_address=?"
+				+ "where customer_id=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, newBaesongji);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
+	
 	// 쿠폰 목록을 넘겨주는 메소드
 	public ArrayList<CouponVO> couponSearch(String id) throws SQLException {
 		
