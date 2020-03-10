@@ -543,4 +543,47 @@ public class ShoppingDAO {
 		}
 		return resultSet;
 	}
+	
+	// 상품문의를 입력받아 저장하는 메소드
+	public boolean askInput(String sangpumNumber, String asker, String asking, boolean secret) {
+		
+		String sql = "insert into sangpum_ask values (?,?,?,?,?)";
+		boolean flag = false;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, sangpumNumber);
+			pstmt.setString(2, asker);
+			pstmt.setString(3, asking);
+			if (secret == true)
+				pstmt.setString(4, "true");
+			else
+				pstmt.setString(5, "false");
+			String askingDate = nowtime();
+			pstmt.setString(5, askingDate);		
+			pstmt.executeUpdate();
+			flag = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			flag = false;
+		}
+		return flag;
+	}
+
+	
+	// 현재 시간을 "YY-MM-DD HH:mm:ss" 형식으로 반환하는 메소드
+	private String nowtime() {
+		
+		Date d1 = new Date();
+		int year = d1.getYear()+1900;
+		int month = d1.getMonth()+1;
+		int day = d1.getDate();
+		int hour = d1.getHours();
+		int min = d1.getMinutes();
+		int sec = d1.getSeconds();		
+		
+		String s = ""+year+"-"+month+"-"+day+" "+hour+":"+min+":"+sec;		
+		
+		return s;
+	}
 }
