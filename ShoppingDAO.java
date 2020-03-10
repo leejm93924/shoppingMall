@@ -509,7 +509,7 @@ public class ShoppingDAO {
 			String imgsrc = rs.getString(9);
 			
 			result = new SangpumVO(number, name, price, jaego,
-						detail, click, inform, category, imgsrc);
+						detail, click, inform, category2, imgsrc);
 			resultSet.add(result);
 		}
 		return resultSet;
