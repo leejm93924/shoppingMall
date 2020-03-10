@@ -84,9 +84,10 @@ public class ShoppingDAO {
 		
 	}
 	
-	public boolean idCheck(String inputId) {
+	public boolean idCheck(String inputId) throws SQLException {
 		
 		String sql = "select * from customer where customer_id=?";
+		boolean flag;
 		
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -97,12 +98,13 @@ public class ShoppingDAO {
 			e.printStackTrace();
 		}
 		
-		if (rs == null) { // 중복되지 않으면
-			return false; // false 반환
-		} else { // 중복되는 id이면
-			return true; // true 반환
+		if (rs.next()) { // 중복이면
+			flag = true; 
+		} else { // 중복이 아니면
+			flag = false; 
 		}
 		
+		return flag;
 	}
 	
 	public String idSearch(String name, String email) throws SQLException {
