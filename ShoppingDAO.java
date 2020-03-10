@@ -482,4 +482,36 @@ public class ShoppingDAO {
 		
 		return resultSet;
 	}
+	
+	// 카테고리와 검색명을 받아서 상품목록을 조회수 순으로 정렬하여 반환하는 메소드
+	public ArrayList<SangpumVO> productSearch(String category, String searchName) throws SQLException {
+		
+		String sql = "select * from sangpum"
+				+ "where (sangpum_category=? AND sangpum_name like '%?%' "
+				+ "order by sangpum_click desc";
+		SangpumVO result = null;
+		ArrayList<SangpumVO> resultSet = new ArrayList<SangpumVO>();
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, category);
+		pstmt.setString(2, searchName);
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			String number = rs.getString(1);
+			String name = rs.getString(2);			
+			int price = rs.getInt(3);
+			int jaego = rs.getInt(4);
+			String detail = rs.getString(5);
+			int click = rs.getInt(6);
+			String inform = rs.getString(7);
+			String category2 = rs.getString(8);
+			String imgsrc = rs.getString(9);
+			
+			result = new SangpumVO(number, name, price, jaego,
+						detail, click, inform, category, imgsrc);
+			resultSet.add(result);
+		}
+		return resultSet;
+	}
 }
