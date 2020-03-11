@@ -131,18 +131,22 @@ public class ShoppingDAO {
 		String sql = "select customer_id from customer"
 				+ " where (customer_name=? AND customer_email=?)";
 		
+		String searchName = "not found";
+		
 		try {
 			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, name);
 			pstmt.setString(2, email);
+			rs = pstmt.executeQuery();			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}		
 		
-		String searchName = null;		
-		searchName =  pstmt.executeQuery().getString(1);
+		while (rs.next()) {
+			searchName = rs.getString(1);
+		}
 		
 		return searchName;
 		
