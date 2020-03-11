@@ -8,8 +8,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-import shoppingDBConn.ShoppingDBConn;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import shoppingVO.AskVO;
+import shoppingVO.BaesongjiVO;
+import shoppingVO.CartVO;
+import shoppingVO.CouponVO;
 import shoppingVO.CustomerVO;
 import shoppingVO.ReviewVO;
 import shoppingVO.SangpumVO;
@@ -17,13 +23,18 @@ import shoppingVO.SangpumVO;
 public class ShoppingDAO { 
 	
 	private Connection con;
-		
+	private DataSource dataFactory;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	
-	public ShoppingDAO() throws ClassNotFoundException, SQLException {
-		con= new ShoppingDBConn().getConnection();
-						
+	public ShoppingDAO() {
+		try {
+			Context ctx = new InitialContext();
+			Context envContext = (Context)ctx.lookup("java:comp/env");
+			dataFactory = (DataSource)envContext.lookup("jdbc/oracle");			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void pstmtClose() throws SQLException {
@@ -38,6 +49,8 @@ public class ShoppingDAO {
 		String sql = "select * from customer where (customer_id=? AND customer_password=?)";
 		CustomerVO tv= null;
 		
+		try {
+		con = dataFactory.getConnection();
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, id);
 		pstmt.setString(2, pw);
@@ -51,24 +64,29 @@ public class ShoppingDAO {
 			String customer_phone = rs.getString("customer_phone");
 			String customer_email = rs.getString("customer_email");
 			
-			try {
+			
 				tv = new CustomerVO(customer_id, customer_password, customer_name, customer_birth,
 						customer_phone, customer_email);
+		}
+		pstmt.close();
+		rs.close();
+		con.close();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
 		return tv;
 		
-	}
+		}
+		
+		
 	
 	public boolean signUp(String id, String pw, String name, String birth, String phone, String email) {
 		
 		String sql = "insert into customer values (?,?,?,?,?,?)";
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pw);
@@ -90,6 +108,7 @@ public class ShoppingDAO {
 		boolean flag;
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, inputId);
 			rs = pstmt.executeQuery();
@@ -110,9 +129,10 @@ public class ShoppingDAO {
 	public String idSearch(String name, String email) throws SQLException {
 		
 		String sql = "select customer_id from customer"
-				+ "where (customer_name=? AND customer_email=?)";
+				+ " where (customer_name=? AND customer_email=?)";
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, name);
 			pstmt.setString(2, email);
@@ -133,10 +153,11 @@ public class ShoppingDAO {
 	public String pwSearch(String name, String email, String id) throws SQLException {
 		
 		String sql = "select * from customer"
-				+ "where (customer_name=? AND customer_email=? AND customer_id=?)";
+				+ " where (customer_name=? AND customer_email=? AND customer_id=?)";
 		String searchMail=null;
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, name);
 			pstmt.setString(2, email);
@@ -158,11 +179,12 @@ public class ShoppingDAO {
 	public String pwReset(String searchMail) {
 		
 		String sql = "update customer set customer_password=?"
-				+ "where customer_email=?";
+				+ " where customer_email=?";
 		
 		String imsiPw = imsiPw();
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, imsiPw);
 			pstmt.setString(2, searchMail);
@@ -203,7 +225,8 @@ public class ShoppingDAO {
 		String sql = "select * from sangpum where sangpum_number=?";
 		SangpumVO result = null;
 		
-		try {
+		try {			
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, sangpumNumber);
 			rs = pstmt.executeQuery();
@@ -230,19 +253,21 @@ public class ShoppingDAO {
 		
 		return result;
 		
-	}
+	}	
+	
 	
 	// 해당 상품에 대한 문의 전체를 반환하는 메소드.
 	public ArrayList<AskVO> askSearch(String sangpumNumber) throws SQLException {
 		
 		String sql = "select * from sangpumask"
-				+ "where sangpum_number=?"
-				+ "order by asking_date desc";
+				+ " where sangpum_number=?"
+				+ " order by asking_date desc";
 		
 		ArrayList<AskVO> resultSet = new ArrayList<AskVO>();
 		AskVO result = null;
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, sangpumNumber);
 			rs = pstmt.executeQuery();
@@ -263,8 +288,10 @@ public class ShoppingDAO {
 				secrets=false;
 			}
 			Date date = rs.getDate("asking_date");
+			String answer = rs.getString("answer");
+			Date answerDate = rs.getDate("answer_date");
 			
-			result = new AskVO(number, askName, asking, secrets, date);
+			result = new AskVO(number, askName, asking, secrets, date, answer, answerDate);
 			resultSet.add(result);
 		}
 		
@@ -276,13 +303,14 @@ public class ShoppingDAO {
 	public ArrayList<ReviewVO> reviewSearch(String sangpumNumber) throws SQLException {
 		
 		String sql = "select * from sangpumreview"
-				+ "where sangpum_number=?"
-				+ "order by review_date desc";
+				+ " where sangpum_number=?"
+				+ " order by review_date desc";
 		
 		ArrayList<ReviewVO> resultSet = new ArrayList<ReviewVO>();
 		ReviewVO result = null;
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, sangpumNumber);
 			rs = pstmt.executeQuery();
@@ -304,7 +332,7 @@ public class ShoppingDAO {
 		}
 		
 		return resultSet;
-				
+		
 	}
 	
 	
@@ -312,10 +340,11 @@ public class ShoppingDAO {
 	public boolean updateCustomer(String id, String newEmail, String newPhone) {
 		
 		String sql = "update customer"
-				+ "set customer_email=?, customer_phone=?"
-				+ "where customer_id=?";
+				+ " set customer_email=?, customer_phone=?"
+				+ " where customer_id=?";
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, newEmail);
 			pstmt.setString(2, newPhone);
@@ -331,18 +360,18 @@ public class ShoppingDAO {
 	}
 	
 	
-	
 	// 배송지 리스트를 넘겨주는 메소드
-	public ArrayList<BaesongjiVO> receiveAddress(String id) throws SQLException {
+	public ArrayList<BaesongjiVO> baesongjiSearch(String id) throws SQLException {
 		
 		String sql = "select *"
-				+ "from baesongji"
-				+ "where customer_id=?";
+				+ " from baesongji"
+				+ " where customer_id=?";
 		
 		ArrayList<BaesongjiVO> resultSet = new ArrayList<BaesongjiVO>();
 		BaesongjiVO result = null;
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -361,14 +390,16 @@ public class ShoppingDAO {
 		return resultSet;
 	}
 	
+	
 	// 배송지 정보를 변경하는 메소드
 	public boolean baesongjiUpdate(String id, String newBaesongji) {
 		
 		String sql = "update baesongji"
-				+ "set customer_address=?"
-				+ "where customer_id=?";
+				+ " set customer_address=?"
+				+ " where customer_id=?";
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, newBaesongji);
 			pstmt.setString(2, id);
@@ -382,16 +413,19 @@ public class ShoppingDAO {
 		
 	}
 	
+	
+	
 	// 쿠폰 목록을 넘겨주는 메소드
 	public ArrayList<CouponVO> couponSearch(String id) throws SQLException {
 		
 		String sql = "select * from coupon"
-				+ "where customer_id=?";
+				+ " where customer_id=?";
 		
 		ArrayList<CouponVO> resultSet = new ArrayList<CouponVO>();
 		CouponVO result = null;
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -413,7 +447,8 @@ public class ShoppingDAO {
 		return resultSet;
 	}
 	
-	// 장바구니에 물건 하나를 담는 메소드
+	
+	// 상품 상세페이지에서 장바구니에 물건 하나를 담는 메소드
 	public boolean cartAdding(String customerId, String sangpumNumber, int sangpumCount) throws SQLException {
 				
 		String name="";
@@ -421,9 +456,10 @@ public class ShoppingDAO {
 		String imgsrc="";
 		
 		String sql = "select sangpum_name, sangpum_price, sangpum_image"
-				+ "from sangpum"
-				+ "where sangpum_number=?";
+				+ " from sangpum"
+				+ " where sangpum_number=?";
 		
+		con = dataFactory.getConnection();
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, sangpumNumber);
 		rs = pstmt.executeQuery();
@@ -454,16 +490,18 @@ public class ShoppingDAO {
 		return true;
 	}
 	
+	
 	// 장바구니 목록 전체를 가져오는 메소드.
 	public ArrayList<CartVO> cartCall(String customerId) throws SQLException {
 		
 		String sql = "select * from cart"
-				+ "where customer_id=?"
-				+ "order by sangpum_name";
+				+ " where customer_id=?"
+				+ " order by sangpum_name";
 		
 		ArrayList<CartVO> resultSet = new ArrayList<CartVO>();
 		CartVO result = null;
 		
+		con = dataFactory.getConnection();
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, customerId);
 		rs = pstmt.executeQuery();
@@ -483,15 +521,17 @@ public class ShoppingDAO {
 		return resultSet;
 	}
 	
+	
 	// 카테고리와 검색명을 받아서 상품목록을 조회수 순으로 정렬하여 반환하는 메소드
 	public ArrayList<SangpumVO> productSearch(String category, String searchName) throws SQLException {
 		
 		String sql = "select * from sangpum"
-				+ "where (sangpum_category=? AND sangpum_name like '%?%' "
-				+ "order by sangpum_click desc";
+				+ " where (sangpum_category=? AND sangpum_name like '%?%' "
+				+ " order by sangpum_click desc";
 		SangpumVO result = null;
 		ArrayList<SangpumVO> resultSet = new ArrayList<SangpumVO>();
 		
+		con = dataFactory.getConnection();
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, category);
 		pstmt.setString(2, searchName);
@@ -515,14 +555,16 @@ public class ShoppingDAO {
 		return resultSet;
 	}
 	
+	
 	// 모든 상품을 조회수로만 정렬하여 반환하는 메소드
 	public ArrayList<SangpumVO> allProductSearch() throws SQLException {
 		
 		String sql = "select * from sangpum"				
-				+ "order by sangpum_click desc";
+				+ " order by sangpum_click desc";
 		SangpumVO result = null;
 		ArrayList<SangpumVO> resultSet = new ArrayList<SangpumVO>();
 		
+		con = dataFactory.getConnection();
 		pstmt = con.prepareStatement(sql);
 		rs = pstmt.executeQuery();
 		
@@ -544,12 +586,14 @@ public class ShoppingDAO {
 		return resultSet;
 	}
 	
+	
 	// 상품문의를 입력받아 저장하는 메소드
 	public boolean askInput(String sangpumNumber, String asker, String asking, boolean secret) {
 		
 		String sql = "insert into sangpum_ask values (?,?,?,?,?)";
 		boolean flag = false;
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, sangpumNumber);
 			pstmt.setString(2, asker);
