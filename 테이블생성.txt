@@ -27,6 +27,8 @@ create table sangpum_ask (
     asking varchar(50),
     secrets varchar(10),
     asking_date date,
+    answer varchar(50),
+    answer_date date,
     primary key (sangpum_number, asker),
     foreign key(sangpum_number) references sangpum(sangpum_number)
 );
