@@ -1,0 +1,262 @@
+<!--별점 버튼 구현 오류로 인해 
+style_1.css는 부득이하게 User폴더에 넣어서 작성하였습니다. -->
+
+
+<!-- 상품상세페이지 -->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- jstl사용 -->
+<!DOCTYPE html>
+<html>
+<script src="../jquery/jquery-3.1.1.js"></script>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="style_1.css">
+<!--외부에서 css 호출 -->
+<script>
+	var price;
+	var amount;
+
+	/* 수량조절 버튼을 누를 때 마다 동작 */
+	function init() {
+		price = document.form.price.value; /*수량 상관없이 원래 가격 */
+		amount = document.form.amount.value; /* 수량 */
+		document.form.sum.value = price; /* 총 금액 */
+		change();
+	}
+
+	/* 수량 * 금액 */
+	function change() {
+		hm = document.form.amount;
+		sum = document.form.sum;
+		if (hm.value < 0) { /* 0개 이하는 찍히지 않게 처리 */
+			hm.value = 0;
+		}
+		sum.value = parseInt(hm.value) * price;
+	}
+
+	/* + 버튼 */
+	function add() {
+		init();
+		hm = document.form.amount;
+		sum = document.form.sum;
+		hm.value++;
+		sum.value = parseInt(hm.value) * price;
+	}
+
+	/* - 버튼 */
+	function del() {
+		init();
+		hm = document.form.amount;
+		sum = document.form.sum;
+		if (hm.value > 1) {
+			hm.value--;
+			sum.value = parseInt(hm.value) * price;
+		}
+	}
+</script>
+</head>
+<body>
+	<jsp:include page="header.jsp"></jsp:include>
+	<section>
+		<!-- 섹션1 -->
+		<div class="detailType" align="center">
+		<table >
+			<tr>
+				<td rowspan=6><img src="../image/people.png" border=0 width=350
+					height=350 />
+				<td>
+			</tr>
+			<tr>
+				<td><h3>상품명</h3></td>
+				<td colspan="2">여</td>
+			</tr>
+			<tr>
+				<td><h3>카테고리</h3></td>
+				<td colspan="2">카테대>카테중>카테소</td>
+			</tr>
+			<tr>
+				<form name="form" method="get">
+					<td><h3>금액</h3></td>
+					<td colspan="2"><input type="text" name="sum" size="11"
+						value="5000" /></td>
+			</tr>
+			<tr>
+				<td><h3>수량</h3></td>
+				<td><input type="hidden" name="price" value="5000" /> <!--수량 상관없이 원래 가격  -->
+					<input type="text" name="amount" value="1" size="3"
+					onchange="change();" /> <!-- onchange : 값이 바뀌었을 경우 --></td>
+				<td>
+					<!-- 수량 조절 버튼 -->
+					<button type="button" onclick="add();">
+						<img src="../image/plus.png" width=15 height=15 />
+					</button>
+					<button type="button" onclick="del();">
+						<img src="../image/minus.png" width=15 height=15 />
+					</button>
+				</td>
+			</tr>
+			</form>
+			<tr>
+				<!--장바구니 담는 버튼  -->
+				<td><form action="toShoppingCart.do" method="post">
+						<button id="button_1" type="submit" value="값" name="shoppingCart" />
+						장바구니
+						</button>
+					</form></td>
+
+				<!--주문하기 버튼 -->
+				<td><form action="toOrder.do" method="post">
+						<button id="button_1" type="submit" value="값" name="order" />
+						주문하기
+						</button>
+					</form></td>
+
+				<!-- 찜하기 버튼 -->
+				<td align="center"><form action="toHeart.do" method="post">
+						<button id="heart_button" type="submit" name="heart">
+							<img src="../image/heart.png" width=20 height=20>
+						</button>
+					</form></td>
+			</tr>
+				</table>
+		</div>
+		<br> <br> <br> <br> <br> <br> <br>
+		<br>
+	</section>
+	<!-- sec1 end -->
+	<div class="detail">
+		<section>
+			<!--sec2 상품상세,배송안내 -->
+			<hr>
+			상품 상세 설명 <br>
+			<br>
+			<br>
+			<br>
+			<hr>
+			배송안내 <br>
+			<br>
+			<br>
+			<br>
+		</section>
+	</div>
+	<!-- detail end -->
+	<article>
+		<!--sec2 end -->
+		<hr>
+		<div class="detail">상품문의</div>
+		<br>
+		<br>
+		<br>
+		<div align="center">
+			<input type="checkbox" name="secretQuestion" />비밀문의체크 <br>
+			<br>
+			<textarea style="resize: none;" name="sangpumAsk" cols="50" rows="2" class="textarea_1"
+				onfocus="this.select()"></textarea>
+			<br>
+			<br>
+			<form action="ask.do" method="post">
+				<button class="registration_btn" type="button">등록</button>
+			</form>
+			<br>
+			<br>
+		</div>
+		<table class="list_1" id="products">
+			<tr>
+				<th>순번</th>
+				<th>내용</th>
+				<th>아이디</th>
+				<th>등록날짜</th>
+			</tr>
+			<tr align="center">
+				<td>1</td>
+				<td>비밀문의입니다</td>
+				<td>abcd***</td>
+				<td>2020-02-29</td>
+			</tr>
+			<tr align="center">
+				<td>2</td>
+				<td>↘답변드립니다.</td>
+				<td>관리자</td>
+				<td>2020-03-01</td>
+			</tr>
+			<tr align="center">
+				<td>2</td>
+				<td>↘답변드립니다.</td>
+				<td>관리자</td>
+				<td>2020-03-01</td>
+			</tr>
+			<tr align="center">
+				<td>2</td>
+				<td>↘답변드립니다.</td>
+				<td>관리자</td>
+				<td>2020-03-01</td>
+			</tr>
+			<tr align="center">
+				<td>2</td>
+				<td>↘답변드립니다.</td>
+				<td>관리자</td>
+				<td>2020-03-01</td>
+			</tr>
+		</table>
+	</article>
+	<!--sec2 end  -->
+	<br>
+	<br>
+	<br>
+	<hr>
+	<article>
+		<!--sec3   -->
+		<div class="detail" align="center">
+			상품리뷰 <br>
+			<%@include file="starButtonTest.jsp"%>
+			
+			<!--별점 구현중  -->
+			<div class="starButtonTest_2">
+				<span class="starR_on">별1</span>
+				<span class="starR">별2</span>
+				<span class="starR">별3</span>
+				<span class="starR">별4</span>
+				<span class="starR">별5</span>
+			</div>
+			
+			
+			
+			
+			
+			<br>
+			<br>
+			<textarea style="resize: none;" class="textarea_1" cols="50" rows="2" onfocus="this.select()" re></textarea>
+			<br>
+			<br>
+			<form action="review.do" method="post">
+			<button class="registration_btn" type="button">등록</button>
+			</form>
+		</div>
+		<!-- "detail" end -->
+		<br>
+		<br>
+		<table class="list_2">
+			<tr>
+				<th>순번</th>
+				<th>별</th>
+				<th>내용</th>
+				<th>아이디</th>
+				<th>등록날짜</th>
+			</tr>
+			<tr align="center">
+				<td>1</td>
+				<td>별갯수</td>
+				<td>배송이ffffffffffffffffffffffffffffffffffffffffffffffff빨라요</td>
+				<td>adcd***</td>
+				<td>2020-02-29</td>
+			</tr>
+		</table>
+	</article>
+	<!--sec3 end  -->
+	<jsp:include page="footer.jsp"></jsp:include>
+
+</body>
+</html>
