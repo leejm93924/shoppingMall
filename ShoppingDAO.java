@@ -172,7 +172,9 @@ public class ShoppingDAO {
 			e.printStackTrace();
 		}
 		
-		searchMail = rs.getString("customer_email");
+		while(rs.next()) {
+			searchMail = rs.getString("customer_email");
+		}		
 		
 		return searchMail;
 		
@@ -635,32 +637,76 @@ public class ShoppingDAO {
 		return s;
 	}
 	
-	public ArrayList<SangpumVO> hotSangpumList() throws SQLException {
-		
-		String sql = "select * from sangpum"				
-				+ " order by sangpum_click desc";
-		SangpumVO result = null;
-		ArrayList<SangpumVO> resultSet = new ArrayList<SangpumVO>();
-		
-		con = dataFactory.getConnection();
-		pstmt = con.prepareStatement(sql);
-		rs = pstmt.executeQuery();
-		
-		while(rs.next()) {
-			String number = rs.getString(1);
-			String name = rs.getString(2);			
-			int price = rs.getInt(3);
-			int jaego = rs.getInt(4);
-			String detail = rs.getString(5);
-			int click = rs.getInt(6);
-			String inform = rs.getString(7);
-			String category = rs.getString(8);
-			String imgsrc = rs.getString(9);
+	
+	
+	// 가장 상위 카테고리만 반환하는 메소드
+		public ArrayList<String> getCategory() throws SQLException {
 			
-			result = new SangpumVO(number, name, price, jaego,
-						detail, click, inform, category, imgsrc);
-			resultSet.add(result);
+			String sql = "select distinct sangpum_category from sangpum";
+			ArrayList<String> categories = new ArrayList<String>();
+			
+			con = dataFactory.getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String s = rs.getString(1).split(">")[0];
+				categories.add(s);
+			}
+			
+			return categories;
 		}
-		return resultSet;
-	}
+	
+	// 상위 카테고리에 해당하는 하위 카테고리를 반환하는 메소드
+		public ArrayList<String> getSubcategory(String category) throws SQLException {
+			
+			String sql = "select distinct sangpum_category from sangpum"
+					+ " where sangpum_category like '?>%'";
+			
+			ArrayList<String> subCategories = new ArrayList<String>();
+			
+			con = dataFactory.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, category);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String s = rs.getString(1).split(">")[1];
+				subCategories.add(s);
+			}
+			
+			return subCategories;
+		}
+	
+	// 카테고리에 해당하는 상품을 반환하는 메소드
+		public ArrayList<SangpumVO> categorySearch(String category) throws SQLException {
+			
+			String sql = "select * from sangpum"
+					+ " where sangpum_category=?"				
+					+ " order by sangpum_click desc";
+			SangpumVO result = null;
+			ArrayList<SangpumVO> resultSet = new ArrayList<SangpumVO>();
+			
+			con = dataFactory.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, category);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String number = rs.getString(1);
+				String name = rs.getString(2);			
+				int price = rs.getInt(3);
+				int jaego = rs.getInt(4);
+				String detail = rs.getString(5);
+				int click = rs.getInt(6);
+				String inform = rs.getString(7);
+				String category2 = rs.getString(8);
+				String imgsrc = rs.getString(9);
+				
+				result = new SangpumVO(number, name, price, jaego,
+							detail, click, inform, category2, imgsrc);
+				resultSet.add(result);
+			}
+			return resultSet;
+		}
 }
