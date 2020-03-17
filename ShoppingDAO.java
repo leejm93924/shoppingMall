@@ -265,7 +265,7 @@ public class ShoppingDAO {
 	// 해당 상품에 대한 문의 전체를 반환하는 메소드.
 	public ArrayList<AskVO> askSearch(String sangpumNumber) throws SQLException {
 		
-		String sql = "select * from sangpumask"
+		String sql = "select * from sangpum_ask"
 				+ " where sangpum_number=?"
 				+ " order by asking_date desc";
 		
@@ -277,28 +277,28 @@ public class ShoppingDAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, sangpumNumber);
 			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String number = rs.getString("sangpum_number");
+				String askName = rs.getString("asker");
+				String asking = rs.getString("asking");
+				String tmp = rs.getString("secrets");
+				boolean secrets;
+				if (tmp.contentEquals("true")) {
+					secrets=true;
+				} else {
+					secrets=false;
+				}
+				Date date = rs.getDate("asking_date");
+				String answer = rs.getString("answer");
+				Date answerDate = rs.getDate("answer_date");
+				
+				result = new AskVO(number, askName, asking, secrets, date, answer, answerDate);
+				resultSet.add(result);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		while(rs.next()) {
-			String number = sangpumNumber;
-			String askName = rs.getString("asker");
-			String asking = rs.getString("asking");
-			String tmp = rs.getString("secrets");
-			boolean secrets;
-			if (tmp.contentEquals("true")) {
-				secrets=true;
-			} else {
-				secrets=false;
-			}
-			Date date = rs.getDate("asking_date");
-			String answer = rs.getString("answer");
-			Date answerDate = rs.getDate("answer_date");
-			
-			result = new AskVO(number, askName, asking, secrets, date, answer, answerDate);
-			resultSet.add(result);
 		}
 		
 		return resultSet;
@@ -308,7 +308,7 @@ public class ShoppingDAO {
 	// 상품번호를 입력받아 리뷰전체를 반환하는 메소드
 	public ArrayList<ReviewVO> reviewSearch(String sangpumNumber) throws SQLException {
 		
-		String sql = "select * from sangpumreview"
+		String sql = "select * from sangpum_review"
 				+ " where sangpum_number=?"
 				+ " order by review_date desc";
 		
@@ -730,5 +730,31 @@ public class ShoppingDAO {
 			
 		}
 
+		
+		// 문의사항을 입력받는 메소드
+		public boolean askInput(String sangpum_number, String customer_id, String asking, String secrets) {
+			
+			String sql = "insert into sangpum_ask values (?,?,?,?,?,?,?)";
+			boolean flag = false;
+			try {
+				con = dataFactory.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, sangpum_number);
+				pstmt.setString(2, customer_id);
+				pstmt.setString(3, asking);
+				pstmt.setString(4, secrets);
+				pstmt.setString(5, "2020-03-05");
+				pstmt.setString(6, "답변란 입니다");
+				pstmt.setString(7, "2020-03-08");
+				pstmt.executeUpdate();
+				pstmt.close();
+				con.close();
+				flag = true;
+				} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return flag;
+		}
 		
 }
