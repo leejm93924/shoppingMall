@@ -92,3 +92,6 @@ create table manager(
 );
 
 commit;
+
+alter table customer modify (customer_email varchar(30));
+commit;
