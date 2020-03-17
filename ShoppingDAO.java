@@ -709,14 +709,18 @@ public class ShoppingDAO {
 			}
 			return resultSet;
 		}
-	
-	// 장바구니에서 목록을 제거하는 메소드
-		public void deletCartList(String sangpum_number) {
-			String sql = "delete * from cart where sangpum_number = ?";
+		
+		// 장바구니에서 목록을 제거하는 메소드
+		public void deletCartList(String[] sangpum_number) {
+			String sql = "delete from cart where sangpum_number = ?";
 			try {
+				
 				con = dataFactory.getConnection();
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, sangpum_number);
+				for(int i = 0; i < sangpum_number.length; i++) {
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, sangpum_number[i]);
+					pstmt.executeUpdate();
+				}
 				pstmt.close();
 				con.close();
 			} catch (SQLException e) {
@@ -725,4 +729,6 @@ public class ShoppingDAO {
 			}
 			
 		}
+
+		
 }
