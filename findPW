@@ -1,0 +1,60 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../css/findPW.css" />
+</head>
+<body style="background-color: #FFFFDE;">
+		<div id="header1">
+		<jsp:include page="../include/header.jsp"></jsp:include></div>
+	<div id="div1">
+		<div id="div2">
+		<h1>계정 정보찾기</h1>
+		</div>
+	<div id="findID">
+	<b id="b1"><a href="findID.jsp" style="text-decoration:none; font-size: 15px; color: black">아이디 찾기</a></b>
+	</div>
+	<div id="findPW">
+	<b id="b2"><a href="#" style="text-decoration:none; font-size: 15px; color: black">비밀번호 찾기</a></b>
+	</div>
+	<div id="border1"></div>
+	<form action="pwsearch.do" method="post">
+	<div id="div3">
+	<div id="id1">
+	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;아이디</p>
+	</div>
+	<div id="name1">
+	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;이름</p>
+	</div>
+	<div id="iddiv1">
+	<input type="text" name="id" id="idinput1" required="required"/>
+	</div>
+	<div id="namediv1">
+	<input type="text" name="irum" id="nameinput1" required="required"/>	
+	</div>
+	<div id="mail1">
+	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;등록한 이메일</p>
+	</div>
+	<div id="maildiv1">
+	<input type="text" name="mail" id="mailinput1" required="required"/>	
+	<input type="submit" value="비밀번호찾기" id="buttoninput1"/>
+	</div>
+	</div>
+	</form>
+	
+	
+	
+	</div>
+	
+	<div id="footer">
+		<jsp:include page="../include/footer.jsp"></jsp:include>
+		</div>
+
+
+
+
+</body>
+</html>
