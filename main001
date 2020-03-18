@@ -1,0 +1,310 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="shoppingVO.*"%>
+
+<% 	
+	request.setCharacterEncoding("utf-8");
+	response.setContentType("text/html;charset=utf-8");
+	ArrayList getList = (ArrayList)request.getAttribute("allSangpum");
+	SangpumVO allSangpum = null;
+%>
+
+<%
+	if(getList == null) {
+%>
+	<jsp:forward page="getAllSangpum.do"/>
+<%
+	}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"  src="js/jquery-3.4.1.min.js"></script>
+
+<script>
+	function hotlist_change(){
+		var img = document.getElementById("hotgoodsimg");
+		var img1 = document.getElementById("hotgoodsimg1");
+		var img2 = document.getElementById("hotgoodsimg2");
+		var img3 = document.getElementById("hotgoodsimg3");
+		var img4 = document.getElementById("hotgoodsimg4");
+		
+		if(img.src == img1.src){
+			img.src = img2.src;
+			document.getElementById("hotlist1").style = "border: none";
+			document.getElementById("hotlist2").style = "border: none";
+			document.getElementById("hotlist3").style = "border: none";
+			document.getElementById("hotlist4").style = "border: none";
+			
+			document.getElementById("hotlist2").style = "border: 2px solid #FFBB00";
+		}else if(img.src == img2.src){
+			img.src = img3.src;
+			document.getElementById("hotlist1").style = "border: none";
+			document.getElementById("hotlist2").style = "border: none";
+			document.getElementById("hotlist3").style = "border: none";
+			document.getElementById("hotlist4").style = "border: none";
+			
+			document.getElementById("hotlist3").style = "border: 2px solid #FFBB00";
+		}else if(img.src == img3.src){
+			img.src = img4.src;
+			document.getElementById("hotlist1").style = "border: none";
+			document.getElementById("hotlist2").style = "border: none";
+			document.getElementById("hotlist3").style = "border: none";
+			document.getElementById("hotlist4").style = "border: none";
+			
+			document.getElementById("hotlist4").style = "border: 2px solid #FFBB00";
+		}else if(img.src == img4.src){
+			img.src = img1.src;
+			document.getElementById("hotlist1").style = "border: none";
+			document.getElementById("hotlist2").style = "border: none";
+			document.getElementById("hotlist3").style = "border: none";
+			document.getElementById("hotlist4").style = "border: none";
+			
+			document.getElementById("hotlist1").style = "border: 2px solid #FFBB00";
+		}
+		
+	}
+
+	function second_bar_on(id){ <%-- 세컨드 바 인기순등등 색상변경--%> 
+		document.getElementById(id).style.color = "#FFBB00";
+	}
+	function second_bar_out(id){
+		document.getElementById(id).style.color = "white";
+	}
+	
+	function hotlist_on(id,img){ <%-- 핫리스트 인기상품 등등 테두리 하이라이트 변경--%>
+		document.getElementById(id).style = "border: 2px solid #FFBB00";
+		var img1 = document.getElementById("hotgoodsimg");
+		var img2 = document.getElementById(img);
+		var imgname = img2.src;
+		img1.src = imgname;
+	}
+	function hotlist_out(id){
+		document.getElementById(id).style = "border: 0px;"
+	}
+	
+	function goods_on(id,title){
+		document.getElementById(id).style ="border: 1px solid #CFCFCF";
+		document.getElementById(title).style ="text-decoration: underline";
+		document.getElementById(title).style.color ="blue";
+	}
+	function goods_out(id,title){
+		document.getElementById(id).style ="border: 0px";
+		document.getElementById(title).style ="text-decoration: none";
+		document.getElementById(title).style.color ="black";
+	}
+	
+	function goods_click(title){ /* 상품 클릭시 상세설명 쪽으로 이동 */
+		location.href = ""+title;
+	}
+	
+</script>
+
+<style>
+
+.smalllink2{ <%--인기순 최신순 등의 스타일 --%>
+	font-size:22px;
+	color:white;
+	text-decoration: none;
+}
+
+.ka{ <%-- 메인 상품 테이블 테두리 스타일 --%>
+	align:center;
+	width:250px;
+}
+
+.goods_div{
+	width:280px;
+}
+
+#hotgoods{
+	position:absolute;
+	top:226px;
+	/* margin: 30px auto; */
+	width:100%;
+	height:400px;
+	z-index:2;
+	cursor:pointer;
+}
+
+#hotlist{
+	position:absolute;
+	top: 250px;
+	left: 70%;
+	width:200px;
+	height: 300px;
+	z-index:3;
+	cursor:pointer;
+}
+
+#second_bar{
+	position:relative;
+/* 	position:absolute;
+	top: 1000px;
+	left: 1300px; */
+	margin:0px auto;
+	top:400px;
+	width:1000px;
+	height:100px;
+	background:#4374D9;
+	z-index:500;
+	
+}
+
+#maingoods{
+	position:relative;
+	margin:0px auto;
+	top:392px;
+	cursor:pointer;
+}
+
+#maingoods_table{
+	margin:0px auto;
+}
+
+#imsi{ /* 여백용 */
+	width:100%;
+	height:400px;
+}
+
+#main_paging{
+	width:100%;
+	height:40px;
+	text-align: center;
+}
+
+#footerdiv{
+	width:100%;
+}
+
+</style>
+
+<jsp:include page="header.jsp"/>
+
+</head>
+<body onload="setInterval('hotlist_change()',5000)">
+
+<div id="hotgoods">
+	<img src="../image/bread.jpg" width=100% height=400px id=hotgoodsimg>
+</div>
+
+<table id="hotlist">
+	<tr>
+		<td  id="hotlist1"  onmouseover="hotlist_on('hotlist1','hotgoodsimg1')" onmouseout="hotlist_out(id)">
+			<img src="../image/bread.jpg" width=200px height=75px id=hotgoodsimg1>
+		</td>
+	</tr>
+	
+	<tr>
+		<td id="hotlist2" onmouseover="hotlist_on('hotlist2','hotgoodsimg2')" onmouseout="hotlist_out(id)">
+			<img src="../image/bird.jpg" width=200px height=75px id=hotgoodsimg2>
+		</td>
+	</tr>
+	
+	<tr>
+		<td id="hotlist3" onmouseover="hotlist_on('hotlist3','hotgoodsimg3')" onmouseout="hotlist_out(id)">
+			<img src="../image/coffe.jpg" width=200px height=75px id=hotgoodsimg3>
+		</td>
+	</tr>
+	
+	<tr>
+		<td id="hotlist4" onmouseover="hotlist_on('hotlist4','hotgoodsimg4')" onmouseout="hotlist_out(id)">
+			<img src="../image/mountain.jpg" width=200px height=75px id=hotgoodsimg4>
+		</td>
+	</tr>
+</table>
+
+<div id="second_bar"> <!-- onclick 시 해당 링크 색상은 진한 주황색으로 고정할것 -->
+	&nbsp;&nbsp;<font size =5><b>상품주제</b></font> &nbsp;<font size=2 color=#F6F6F6><sub>(123,456)</sub></font> <br><br>&nbsp;
+	<a href="hotSangpumSearch.do" class="smalllink2" id="sec_1" onmouseover="second_bar_on('sec_1')" onmouseout="second_bar_out('sec_1')">인기순</a>&nbsp;
+	<a href="#" class="smalllink2" id="sec_2" onmouseover="second_bar_on('sec_2')" onmouseout="second_bar_out('sec_2')">최신순</a>&nbsp;
+	<a href="#" class="smalllink2" id="sec_3" onmouseover="second_bar_on('sec_3')" onmouseout="second_bar_out('sec_3')">낮은가격순</a>&nbsp;
+	<a href="#" class="smalllink2" id="sec_4" onmouseover="second_bar_on('sec_4')" onmouseout="second_bar_out('sec_4')">높은가격순</a>
+</div>
+
+
+<div id="maingoods">
+	<table cellspacing="60" cellpadding="80" id="maingoods_table"> <%-- 테이블의 셀 사이끼리의 너비를 위해 cell~명령어 --%>
+		<tr>
+		<%
+		for(int i = 0; i < getList.size(); i++) {
+			String str1 = "goods_table_div" + i;
+			String str2 = "goods_table_goodstitle" + i;
+			allSangpum = (SangpumVO)getList.get(i);
+			
+			String aa = "";
+			String bb = "";
+			if(i % 3 ==0 ){
+				if(i!=0)
+				aa = "<tr>";
+			}else if(i+1 %3 == 0){
+				if(i!=getList.size())
+				bb ="</tr>";
+			}
+			
+			%>
+			<%= aa %>
+			<td>
+				<div class="goods_div" id=<%=str1 %>
+				
+					onmouseover="goods_on('<%=str1 %>','<%=str2 %>')"
+					onmouseout ="goods_out(id,'<%=str2 %>')"
+					onclick ="">
+					<table id="goods_table1">
+	
+						<tr>
+							<td class="ka" align="center">
+								<a href="sangpumSearch.do?sangpumNum=<%=allSangpum.getSangpumNumber()%>">
+								<img src="../image/<%=allSangpum.getSangpumImageSrc() %>" width=220px; height=250px; id="goods_table_img1">
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td class="ka" id=<%=str2 %>> <!-- 관리자 쪽에서 글자숫자 제한 두기 --> 
+								<font size=4><%=allSangpum.getSangpumName() %> </font>
+							</td>
+						</tr>
+						<tr>
+							<td class="ka">
+								<%=allSangpum.getSangpumDetail() %>
+							</td>
+						</tr>
+						<tr>
+							<td class="ka"> <!-- 가격 옆에 이미지추가 하면 좋음 -->
+								<font color="red"><b><%=allSangpum.getSangpumPrice() %></b>원</font>
+							</td>
+						</tr>
+						<tr>
+							<td class="ka">
+								★★★★☆
+							</td>
+						</tr>
+	
+					</table>
+			
+				</div>
+			</td>
+			<%= bb %>
+			<% } %>
+			</tr>
+	</table>
+</div>
+
+<div id=imsi> <!-- 여백용 --></div>
+
+	<jsp:include page="main_paging.jsp"/> <!-- 페이징 jsp 인클루드 -->
+<div id=main_paging> <!-- 페이징 div -->
+	<%-- <%@include file="main_paging.jsp" %> --%>
+</div>
+
+<hr>
+<div id=footerdiv>
+	<jsp:include page="footer.jsp"/>
+</div>
+
+</body>
+</html>
