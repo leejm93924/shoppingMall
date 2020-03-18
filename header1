@@ -100,8 +100,8 @@
 	<div id=header_div>
 		<a href="#" class="smalllink"><font color="orange"><% if(login_check != null){%>
 			<%= login_check.getCustomerName() %> <%} %></font> 님</a>
-		<a href="../UserInfo/couponA.jsp" class="smalllink">보유쿠폰</a>
-		<a href="logout.do" class="smalllink">로그아웃</a>
+		<a href="#" class="smalllink">보유쿠폰</a>
+		<a href="logout.jsp" class="smalllink">로그아웃</a>
 		<a href="#" class="smalllink">고객센터</a>
 	</div>
 </div>
@@ -114,7 +114,7 @@
 	</div> <!-- 모바일용 전체검색 끝-->
 	
 	<div id="sitename_m">
-		<a href="getAllSangpum.do" id=main_sitename>sitename</a>
+		<a href="#" id=main_sitename>sitename</a>
 	</div>
 	
 	<div id=search_m> <!-- 모바일용 검색버튼 -->
@@ -130,7 +130,7 @@
 <form action="#" method="post" id=homeform>
 
 	<div id="sitename">
-		<a href="getAllSangpum.do" id=sitename_pc>sitename</a>
+		<a href="#" id=sitename_pc>sitename</a>
 	</div>
 	
 	<div id=mainselect>
@@ -154,14 +154,13 @@
 	</div>
 	</form>
 	
-	<div id=main_mypage style="display:<%=login_yes%>">
-		&nbsp;&nbsp;&nbsp;<a href="../UserInfo/buyAllInfo.jsp" class=smalllink>
-		<img src="../image/dance.png" width="50px" height="50px"><br>
+	<div id=main_mypage>
+		&nbsp;&nbsp;&nbsp;<a href="#" class=smalllink><img src="../image/dance.png" width="50px" height="50px"><br>
 		<b>마이페이지</b></a> <!-- 마이페이지 -->
 	</div>
 	
-	<div id=shopcart style="display:<%=login_yes%>">
-		&nbsp;&nbsp;<a href="getAllCart.do" class=smalllink><img src="../image/cart.png" width="50px" height="50px"><br>
+	<div id=shopcart>
+		&nbsp;&nbsp;<a href='#' class=smalllink><img src="../image/cart.png" width="50px" height="50px"><br>
 		<b>장바구니</b></a> <!-- 장바구니 -->
 		<input type="button" id=cartbutton value="1" style="display:<%=login_yes%>"> <!-- 장바구니 몇개담겨있는지 숫자버튼 -->
 		
@@ -333,3 +332,4 @@
 </body>
 
 </html>
+
