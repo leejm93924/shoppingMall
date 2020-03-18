@@ -13,7 +13,7 @@
 
 <%
 	if(getList == null) {
-%>	
+%>
 	<jsp:forward page="getAllSangpum.do"/>
 <%
 	}
@@ -23,6 +23,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript"  src="js/jquery-3.4.1.min.js"></script>
 
 <script>
 	function hotlist_change(){
@@ -150,7 +151,7 @@
 	width:1000px;
 	height:100px;
 	background:#4374D9;
-	z-index:50;
+	z-index:500;
 	
 }
 
@@ -180,22 +181,6 @@
 	width:100%;
 }
 
-#hotgoods_m{
-	display:none;
-}
-
-#main_menu_m{
-	display:none;
-}
-
-#today_goods_m{
-	display:none;
-}
-
-#bottom_bar_m{
-	display:none;
-}
-
 </style>
 
 <jsp:include page="header.jsp"/>
@@ -205,10 +190,6 @@
 
 <div id="hotgoods">
 	<img src="../image/bread.jpg" width=100% height=400px id=hotgoodsimg>
-</div>
-
-<div id="hotgoods_m"> <!-- 모바일용 메인광고 -->
-	<img src="../image/bread.jpg" width=360px height=200px id=hotgoodsimg>
 </div>
 
 <table id="hotlist">
@@ -236,21 +217,6 @@
 		</td>
 	</tr>
 </table>
-
-<div id="main_menu_m"> <!-- 모바일용 전체메뉴 -->
-	<input type="button" value="1번" class="main_menu_button_m">
-	<input type="button" value="1번" class="main_menu_button_m">
-	<input type="button" value="1번" class="main_menu_button_m">
-	<input type="button" value="1번" class="main_menu_button_m">
-	<input type="button" value="1번" class="main_menu_button_m">
-	<input type="button" value="1번" class="main_menu_button_m">
-	<input type="button" value="1번" class="main_menu_button_m">
-	<input type="button" value="1번" class="main_menu_button_m">
-</div>
-
-<div id="today_goods_m"> <!-- 모바일용 div --> 
-	<font size=11 color=white><b>오늘의 상품!</b></font>
-</div>
 
 <div id="second_bar"> <!-- onclick 시 해당 링크 색상은 진한 주황색으로 고정할것 -->
 	&nbsp;&nbsp;<font size =5><b>상품주제</b></font> &nbsp;<font size=2 color=#F6F6F6><sub>(123,456)</sub></font> <br><br>&nbsp;
@@ -328,26 +294,6 @@
 	</table>
 </div>
 
-<div id="bottom_bar_m"> <!-- 모바일용 하단고정바 -->
-	<div id="bottom_bar_div1_m" onclick="">
-		<img src="../image/dance.png" width="40" height="40">
-		<br>홈페이지
-	</div>
-	<div id="bottom_bar_div2_m">
-		<img src="../image/dance.png" width="40" height="40">
-		<br>홈페이지
-	</div>
-	<div id="bottom_bar_div3_m">
-		<img src="../image/dance.png" width="40" height="40">
-		<br>홈페이지
-	</div>
-	<div id="bottom_bar_div4_m">
-		<img src="../image/dance.png" width="40" height="40">
-		<br>홈페이지
-	</div>
-
-</div>
-
 <div id=imsi> <!-- 여백용 --></div>
 
 	<jsp:include page="main_paging.jsp"/> <!-- 페이징 jsp 인클루드 -->
@@ -359,13 +305,9 @@
 <div id=footerdiv>
 	<jsp:include page="footer.jsp"/>
 </div>
-<!-- ----------------------------------------------------------- -->
+
 </body>
-
-
-
 </html>
-
 
 
 
