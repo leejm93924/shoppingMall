@@ -756,5 +756,32 @@ public class ShoppingDAO {
 			}
 			return flag;
 		}
+	// 리뷰를 입력받는 메소드
+		public boolean reviewInput(String sangpum_number44, String reviewer, String review44) {
+			
+			String sql = "insert into sangpum_review values(?,?,?,?,?,?)";
+			boolean flag = false;
+			
+			try {
+				con = dataFactory.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, sangpum_number44);
+				pstmt.setInt(2, 3);
+				pstmt.setString(3, review44);
+				pstmt.setString(4, reviewer);
+				pstmt.setInt(5, 0);
+				pstmt.setString(6, "2020-03-18");
+				pstmt.executeUpdate();
+				pstmt.close();
+				con.close();
+				flag = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// TODO Auto-generated method stub
+			return flag;
+		}
 		
 }
