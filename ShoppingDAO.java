@@ -81,7 +81,8 @@ public class ShoppingDAO {
 		
 		
 	
-	public boolean signUp(String id, String pw, String name, String birth, String phone, String email) {
+	public boolean signUp(String id, String pw, String name, 
+			String birth, String phone, String email) throws SQLException {
 		
 		String sql = "insert into customer values (?,?,?,?,?,?)";
 		
@@ -98,6 +99,8 @@ public class ShoppingDAO {
 		} catch (SQLException e) {
 			return false;
 		}
+		pstmt.close();
+		con.close();
 		return true;
 		
 	}
@@ -122,7 +125,8 @@ public class ShoppingDAO {
 		} else { // 중복이 아니면
 			flag = false; 
 		}
-		
+		pstmt.close();
+		con.close();
 		return flag;
 	}
 	
@@ -147,7 +151,8 @@ public class ShoppingDAO {
 		while (rs.next()) {
 			searchName = rs.getString(1);
 		}
-		
+		pstmt.close();
+		con.close();
 		return searchName;
 		
 	}
@@ -175,14 +180,15 @@ public class ShoppingDAO {
 		while(rs.next()) {
 			searchMail = rs.getString("customer_email");
 		}		
-		
+		pstmt.close();
+		con.close();
 		return searchMail;
 		
 	}
 
 
 	// 비밀번호를 초기화하고, 임시 비밀번호를 반환하는 메소드
-	public String pwReset(String searchMail) {
+	public String pwReset(String searchMail) throws SQLException {
 		
 		String sql = "update customer set customer_password=?"
 				+ " where customer_email=?";
@@ -199,7 +205,8 @@ public class ShoppingDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		
+		pstmt.close();
+		con.close();
 		return imsiPw;
 	}
 
@@ -219,7 +226,6 @@ public class ShoppingDAO {
 			int index = rnd.nextInt(length);
 			tmp3[i] = tmp2[index];
 		}
-		
 		String pw = tmp3.toString();
 		return pw;
 	}
@@ -256,7 +262,8 @@ public class ShoppingDAO {
 			result = new SangpumVO(number, name, price, jaego,
 						detail, click, inform, category, imgsrc);
 		}
-		
+		pstmt.close();
+		con.close();
 		return result;
 		
 	}	
@@ -300,7 +307,8 @@ public class ShoppingDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		pstmt.close();
+		con.close();
 		return resultSet;
 	}
 	
@@ -336,14 +344,15 @@ public class ShoppingDAO {
 			result = new ReviewVO(number, stars, review, name, reviewup, reviewDate);
 			resultSet.add(result);
 		}
-		
+		pstmt.close();
+		con.close();
 		return resultSet;
 		
 	}
 	
 	
 	// 회원이 자신의 이메일, 휴대폰번호를 수정하는 메소드
-	public boolean updateCustomer(String id, String newEmail, String newPhone) {
+	public boolean updateCustomer(String id, String newEmail, String newPhone) throws SQLException {
 		
 		String sql = "update customer"
 				+ " set customer_email=?, customer_phone=?"
@@ -361,7 +370,8 @@ public class ShoppingDAO {
 			e.printStackTrace();
 			return false;
 		}
-		
+		pstmt.close();
+		con.close();
 		return true;
 	}
 	
@@ -393,12 +403,14 @@ public class ShoppingDAO {
 			result = new BaesongjiVO(customerId,address);
 			resultSet.add(result);
 		}
+		pstmt.close();
+		con.close();
 		return resultSet;
 	}
 	
 	
 	// 배송지 정보를 변경하는 메소드
-	public boolean baesongjiUpdate(String id, String newBaesongji) {
+	public boolean baesongjiUpdate(String id, String newBaesongji) throws SQLException {
 		
 		String sql = "update baesongji"
 				+ " set customer_address=?"
@@ -415,6 +427,8 @@ public class ShoppingDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		pstmt.close();
+		con.close();
 		return false;
 		
 	}
@@ -449,7 +463,8 @@ public class ShoppingDAO {
 			result = new CouponVO(number,type,discount, customer_id);
 			resultSet.add(result);
 		}
-		
+		pstmt.close();
+		con.close();
 		return resultSet;
 	}
 	
@@ -476,9 +491,13 @@ public class ShoppingDAO {
 			imgsrc = rs.getString("sangpum_image");						
 		}
 		
+		pstmt.close();
+		con.close();
+		
 		sql = "insert into cart values (?,?,?,?,?,?)";
 		
 		try {
+			con = dataFactory.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, customerId);
 			pstmt.setString(2, sangpumNumber);
@@ -492,7 +511,8 @@ public class ShoppingDAO {
 			e.printStackTrace();
 			return false;
 		}
-		
+		pstmt.close();
+		con.close();
 		return true;
 	}
 	
@@ -523,7 +543,8 @@ public class ShoppingDAO {
 			result = new CartVO(id, number, name, count, imgsrc, price);
 			resultSet.add(result);
 		}
-		
+		pstmt.close();
+		con.close();
 		return resultSet;
 	}
 	
@@ -558,6 +579,8 @@ public class ShoppingDAO {
 						detail, click, inform, category2, imgsrc);
 			resultSet.add(result);
 		}
+		pstmt.close();
+		con.close();
 		return resultSet;
 	}
 	
@@ -589,12 +612,15 @@ public class ShoppingDAO {
 						detail, click, inform, category, imgsrc);
 			resultSet.add(result);
 		}
+		pstmt.close();
+		con.close();
 		return resultSet;
 	}
 	
 	
 	// 상품문의를 입력받아 저장하는 메소드
-	public boolean askInput(String sangpumNumber, String asker, String asking, boolean secret) {
+	public boolean askInput(String sangpumNumber, String asker, 
+				String asking, boolean secret) throws SQLException {
 		
 		String sql = "insert into sangpum_ask values (?,?,?,?,?)";
 		boolean flag = false;
@@ -616,7 +642,11 @@ public class ShoppingDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			flag = false;
+		} finally {
+			pstmt.close();
+			con.close();
 		}
+		
 		return flag;
 	}
 
@@ -653,7 +683,8 @@ public class ShoppingDAO {
 				String s = rs.getString(1).split(">")[0];
 				categories.add(s);
 			}
-			
+			pstmt.close();
+			con.close();
 			return categories;
 		}
 	
@@ -674,7 +705,8 @@ public class ShoppingDAO {
 				String s = rs.getString(1).split(">")[1];
 				subCategories.add(s);
 			}
-			
+			pstmt.close();
+			con.close();
 			return subCategories;
 		}
 	
@@ -707,6 +739,8 @@ public class ShoppingDAO {
 							detail, click, inform, category2, imgsrc);
 				resultSet.add(result);
 			}
+			pstmt.close();
+			con.close();
 			return resultSet;
 		}
 		
@@ -756,7 +790,8 @@ public class ShoppingDAO {
 			}
 			return flag;
 		}
-	// 리뷰를 입력받는 메소드
+
+		// 리뷰를 입력받는 메소드
 		public boolean reviewInput(String sangpum_number44, String reviewer, String review44) {
 			
 			String sql = "insert into sangpum_review values(?,?,?,?,?,?)";
@@ -782,6 +817,30 @@ public class ShoppingDAO {
 			
 			// TODO Auto-generated method stub
 			return flag;
+		}
+		
+		// main-paging
+		public ArrayList getPaging(int pageNum, int itemNum) {
+			ArrayList<SangpumVO> resultSet = new ArrayList<SangpumVO>();
+			try {
+				ArrayList<SangpumVO> list = allProductSearch();
+				System.out.println(list.size());
+				System.out.println(pageNum);
+				System.out.println(itemNum);
+			
+				
+				for(int i = (pageNum - 1) * itemNum; i < ((pageNum-1) * itemNum) + itemNum; i++) {
+					if(i == list.size()) {
+						return resultSet;
+					}
+					//11 9  
+					resultSet.add(list.get(i));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return resultSet;
 		}
 		
 }
