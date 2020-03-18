@@ -1,44 +1,231 @@
 <%@page import="shoppingVO.CustomerVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+@media all and (max-width: 360px) { /* 320px 이상은 모바일 */
+	#header1 {
+		position: fixed;
+		z-index: 300;
+	}
+	#div1 {
+		top: 50px;
+		left: 0%;
+		width: 344px;
+		height: 800px;
+		border: 2px solid #EAEAEA;
+	}
+	#div2 {
+		position: absolute;
+		top: 7.5%;
+		left: 0%;
+	}
+	#findID {
+		position: absolute;
+		top: 14%;
+		left: 0%;
+		width: 169px;
+		height: 40px;
+		border-left: 2px solid #5CD1E5;
+		border-top: 2px solid #5CD1E5;
+		border-right: 2px solid #5CD1E5;
+	}
+	#findPW {
+		position: absolute;
+		top: 14%;
+		left: 50%;
+		width: 171px;
+		height: 38px;
+		border-top: 2px solid #EAEAEA;
+		border-right: 2px solid #EAEAEA;
+		border-bottom: 2px solid #5CD1E5;
+	}
+	#border1 {
+		display: none;
+	}
+	#b1 {
+		position: absolute;
+		top: 20%;
+		left: 22%;
+	}
+	#b2 {
+		position: absolute;
+		top: 20%;
+		left: 22%;
+	}
+	#div3 {
+		position: absolute;
+		top: 23%;
+		left: 0%;
+		width: 344px;
+		height: 100px;
+		border-top: 2px solid #5D5D5D;
+	}
+	#find {
+		position: absolute;
+		top: 0%;
+		left: 0%;
+		width: 122px;
+		height: 50px;
+		background-color: #D4F4FA;
+		border-bottom: 1px solid #D5D5D5;
+		border-right: 1px solid #D5D5D5;
+	}
+	#findiddiv1 {
+		position: absolute;
+		top: 10%;
+		left: 35%;
+		width: 222px;
+		height: 40px;
+		border-bottom: 1px solid #D5D5D5;
+	}
+	#footer {
+		position: absolute;
+		top: 350px;
+	}
+}
 
-<link rel="stylesheet" type="text/css" href="../css/findID2.css" />
+@media all and (min-width: 400px) { /* 960px 이상은 PC */
+	body {
+		background: #FFFFDE;
+	}
+	#header1 {
+		margin: 0px;
+		padding: 0px;
+		position: absolute;
+		top: 0px;
+		left: 0%;
+		width: 100%;
+	}
+	#div1 {
+		position: absolute;
+		top: 226px;
+		left: 25%;
+		background-color: white;
+		width: 900px;
+		height: 800px;
+		border: 2px solid #EAEAEA;
+	}
+	#div2 {
+		position: absolute;
+		top: 5%;
+		left: 5%;
+	}
+	#findID {
+		position: absolute;
+		top: 14%;
+		left: 5%;
+		width: 170px;
+		height: 40px;
+		border-left: 2px solid #5CD1E5;
+		border-top: 2px solid #5CD1E5;
+		border-right: 2px solid #5CD1E5;
+	}
+	#findPW {
+		position: absolute;
+		top: 14%;
+		left: 24.3%;
+		width: 170px;
+		height: 38px;
+		border-top: 2px solid #EAEAEA;
+		border-right: 2px solid #EAEAEA;
+		border-bottom: 2px solid #5CD1E5;
+	}
+	#border1 {
+		position: absolute;
+		top: 14%;
+		left: 43%;
+		width: 512px;
+		height: 40px;
+		border-bottom: 2px solid #5CD1E5;
+	}
+	#b1 {
+		position: absolute;
+		top: 20%;
+		left: 20%;
+	}
+	#b2 {
+		position: absolute;
+		top: 20%;
+		left: 20%;
+	}
+	#div3 {
+		position: absolute;
+		top: 30%;
+		left: 5%;
+		width: 840px;
+		height: 100px;
+		border-top: 2px solid #5D5D5D;
+	}
+	#find {
+		position: absolute;
+		top: 0%;
+		left: 0%;
+		width: 200px;
+		height: 50px;
+		background-color: #D4F4FA;
+		border-bottom: 1px solid #D5D5D5;
+		border-right: 1px solid #D5D5D5;
+	}
+	#findiddiv1 {
+		position: absolute;
+		top: 0%;
+		left: 24%;
+		width: 640px;
+		height: 50px;
+		border-bottom: 1px solid #D5D5D5;
+	}
+	#footer {
+		margin: 0px;
+		padding: 0px;
+		position: absolute;
+		top: 900px;
+		left: 0%;
+		width: 100%;
+		background-color: white;
+	}
+}
+</style>
+<!-- <link rel="stylesheet" type="text/css" href="../css/findID2.css" />
+<link rel="stylesheet" type="text/css" href="../css/findID2_mobile.css" /> -->
 </head>
 
 <body style="background-color: #FFFFDE;">
-		<div id="header1">
-		<jsp:include page="../include/header.jsp"></jsp:include></div>	
+	<div id="header1">
+		<jsp:include page="../include/header.jsp"></jsp:include></div>
 	<div id="div1">
 		<div id="div2">
-		<h1>계정 정보찾기</h1>
+			<h1>계정 정보찾기</h1>
 		</div>
-	<div id="findID">
-	<b id="b1"><a href="#" style="text-decoration:none; font-size: 15px; color: black">아이디 찾기</a></b>
-	</div>
-	<div id="findPW">
-	<b id="b2"><a href="findPW.jsp" style="text-decoration:none; font-size: 15px; color: black">비밀번호 찾기</a></b>
-	</div>
-	<div id="border1"></div>
-	<div id="div3">
-	<div id="find">
-	<br />
-	<b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;아이디:</b>
-	</div>
-	<div id="findiddiv1">
-		<b>찾는 아이디는  ${id}</b>
-	</div>
-	</div>
+		<div id="findID">
+			<b id="b1"><a href="#"
+				style="text-decoration: none; font-size: 15px; color: black">아이디
+					찾기</a></b>
+		</div>
+		<div id="findPW">
+			<b id="b2"><a href="findPW.jsp"
+				style="text-decoration: none; font-size: 15px; color: black">비밀번호
+					찾기</a></b>
+		</div>
+		<div id="border1"></div>
+		<div id="div3">
+			<div id="find">
+				<br /> <b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;아이디:</b>
+			</div>
+			<div id="findiddiv1">
+				<b>&nbsp;&nbsp;찾는 아이디는 ${id} 입니다.</b>
+			</div>
+		</div>
 	</div>
 	<div id="footer">
 		<jsp:include page="../include/footer.jsp"></jsp:include>
-		</div>
-	
+	</div>
+
 
 
 
