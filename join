@@ -1,0 +1,140 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="jquery/jquery.js"></script>
+<script src="jquery/jquery-3.3.1.js"></script>
+<title>회원가입</title>
+<link rel="stylesheet" type="text/css" href="../css/join.css" />
+</head>
+<body style="background-color: #FFFFDE;">
+	<div id="logo1">
+		<jsp:include page="logo.jsp" /></div>
+	<div id="div1">
+		<form action="signup.do" method="post">
+		<div id="login1">
+			<div id="icon1">
+				<img src="../image/id.png" width="30px" height="30px" />
+			</div>
+			
+				<input type="text" name="id" id="idinput" class="form-control tooltipstered" required="required"
+					placeholder="아이디" />	
+			<div id="check1">
+				 &nbsp;&nbsp;&nbsp;<span id="idChk"></span>
+				</div>					
+		</div>
+		
+		<div id="pw1">
+			<div id="icon2">
+				<img src="../image/key1.png" width="30px" height="30px" />
+			</div>
+			<input type="password" name="pw1" id="pwinput1" required="required"
+				placeholder="비밀번호" />
+		</div>
+		<div id="pw2">
+			<div id="icon3">
+				<img src="../image/key2.png" width="30px" height="30px" />
+			</div>
+			<input type="password" name="pw2" id="pwinput2" required="required"
+				placeholder="비밀번호 확인" />
+		</div>
+		<div id="name1">
+			<div id="icon4">
+				<img src="../image/name.png" width="30px" height="30px" />
+			</div>
+			<input type="text" name="irum" id="nameinput1" required="required"
+				placeholder="이름" />
+		</div>
+		<div id="date1">
+			<div id="icon5">
+				<img src="../image/date.png" width="30px" height="30px" />
+			</div>
+			<input type="text" name="birth" id="dateinput1" required="required"
+				placeholder="생년월일" />
+		</div>
+		<div id="tel1">
+			<div id="icon6">
+				<img src="../image/phone.png" width="30px" height="30px" />
+			</div>
+			<input type="text" name="tel" id="telinput1" required="required"
+				placeholder="휴대폰" />
+		</div>
+		<div id="mail1">
+			<div id="icon7">
+				<img src="../image/mail.png" width="30px" height="30px" />
+			</div>
+			<input type="text" name="mail" id="mailinput1" required="required"
+				placeholder="email" />
+		</div>
+
+		<div id="button1">
+			<input type="submit" value="가입하기" id="submitinput" />
+		</div>
+		</form>
+	</div>
+
+
+
+
+</body>
+<script>
+<% 
+	%>
+//JQuery 사용
+$(function() {
+	
+	// 회원가입 입력값 검증
+	// ID 입력값 검증
+	
+	// ID 입력창 키보드 입력 이벤트 함수 만들기
+	// document.getElementById("user_id") 와 같다.
+	$("#idinput").on("keyup", function() {
+		
+		const idInput = $("#idinput");
+		// console.log(idInput.val());
+		
+		if(idInput.val() === "") {
+			// css함수는 디자인을 바꾸는 함수
+			idInput.css("background", "pink");
+			$("#idChk").html("<b style='color:red;'>[아이디는 필수 정보입니다!]</b>");
+		} else {
+			
+			/*
+				# AJAX 비동기 통신
+				- 비동기 통신은 페이지를 새로고침하지 않고
+				화면을 유지하면서 서버와 실시간으로 통신하는 기술입니다.
+			*/
+			
+			$.ajax({
+				type: "POST", // http 요청방식
+				url: "confirm-id.jsp", // 서버의 어디로 요청할 것인지
+				data: {"id": idInput.val()}, // 통신 시에 서버쪽으로 전달할 데이터
+				success: function(result) { // result 에는 서버가 보내준 데이터가 들어옴
+					// console.log("통신 성공!")
+					// console.log("result: ", result);
+					result = $.trim(result); // result의 앞뒤 공백 제거. (통신도중 의미없는 공백문자열이 추가되는 것을 방지)
+					if(result === "YES"){
+						idInput.css("background", "white");
+						$("#idChk").html("<b style='color:green;'>[아이디 사용 가능!]</b>");
+					}else{
+						idInput.css("background", "pink");
+						$("#idChk").html("<b style='color:red;'>[아이디가 중복됨!]</b>");
+					}
+				
+				} , //통신 성공시 클라이언트에서 해야할 일들을 함수로 기술한다.
+				error: function () {
+					console.log("통신 실패!");
+				}
+			});
+		}
+
+	}); // end IdInput Event
+	
+	
+}); // end JQuery
+
+</script>
+</html>
