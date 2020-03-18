@@ -1,0 +1,335 @@
+<%@page import="shoppingVO.CustomerVO"%>
+<%@page import="com.sun.xml.internal.txw2.Document"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"  src="../jquery/jquery-3.4.1.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../css/header.css" />
+<link rel="stylesheet" type="text/css" href="../css/header_m.css" />
+
+<script>
+
+	<%
+		String login_yes="";
+		String login_no="";
+		CustomerVO login_check= (CustomerVO)session.getAttribute("login");
+		if(login_check==null){
+			login_yes="none";
+			login_no="block";
+		} else{
+			login_yes="block";
+			login_no="none";
+		}
+	%>
+	
+	function mousein(id){	<%-- 목록바 onmouseover 스크립트 --%>
+		document.getElementById(id).style.backgroundColor = "white";
+		document.getElementById(id).style.color = "black";
+	}
+	function mouseout(id){
+		document.getElementById(id).style.backgroundColor ="#6799FF";
+		document.getElementById(id).style.color = "white";
+	}
+	
+	function allmenu_out(){ <%-- 모든메뉴 끄기 --%>
+		document.getElementById("bigmenu").style = "display:none";
+		document.getElementById("smallmenu1").style = "display:none";
+		document.getElementById("smallmenu2").style = "display:none";
+		document.getElementById("smallmenu3").style = "display:none";
+		document.getElementById("smallmenu4").style = "display:none";
+		document.getElementById("smallmenu5").style = "display:none";
+	}
+	
+	function bigmenu_on(){ <%-- 큰 메뉴목록 나오기,숨기기 --%>
+		document.getElementById("bigmenu").style = "display:block";
+	}
+	function bigmenu_out(){
+		document.getElementById("bigmenu").style = "display:none";
+	}
+	
+	function smallmenu_on(bigid,smallid){ <%-- 작은 메뉴목록 나오기 및 선택한 큰메뉴 색변경 --%>
+		document.getElementById(bigid).style.backgroundColor = "gray";
+		document.getElementById(bigid).style.color = "white";
+		document.getElementById("smallmenu1").style = "display:none";
+		document.getElementById("smallmenu2").style = "display:none";
+		document.getElementById("smallmenu3").style = "display:none";
+		document.getElementById("smallmenu4").style = "display:none";
+		document.getElementById("smallmenu5").style = "display:none";
+		document.getElementById(smallid).style = "display:block";
+	}
+	function smallmenu_out(bigid){
+		document.getElementById(bigid).style.backgroundColor = "white";
+		document.getElementById(bigid).style.color = "black";
+	}
+	
+	function imsi_on(id){
+		document.getElementById(id).style.color = "red";
+	}
+	function imsi_out(id){
+		document.getElementById(id).style.color = "black";
+	}
+
+	function search_open() { /* 모바일용 검색 닫기 함수 */
+		document.getElementById("search_div_m").style.display ="block";
+	}
+	function search_close() { /* 모바일용 검색 닫기 함수 */
+		document.getElementById("search_div_m").style.display ="none";
+	}
+</script>
+
+</head>
+
+<body>
+
+<header>
+
+<div id=header_no_login style="display:<%=login_no%>">	<!-- 비로그인 시 나오는 헤더 -->
+	<div id=header_div>
+		<a href="login.jsp" class="smalllink">로그인</a>
+		<a href="#" class="smalllink">회원가입</a>
+		<a href="#" class="smalllink">고객센터</a>
+	</div>
+</div>
+
+<div id=header_login style="display:<%=login_yes%>"> <!-- 로그인 시 나오는 헤더 -->
+	<div id=header_div>
+		<a href="#" class="smalllink"><font color="orange"><% if(login_check != null){%>
+			<%= login_check.getCustomerName() %> <%} %></font> 님</a>
+		<a href="../UserInfo/couponA.jsp" class="smalllink">보유쿠폰</a>
+		<a href="logout.do" class="smalllink">로그아웃</a>
+		<a href="#" class="smalllink">고객센터</a>
+	</div>
+</div>
+<hr>
+
+<div id=home>
+	
+	<div id=allmenu_m> <!-- 모바일용 전체검색 -->
+		<img src="../image/three-bar.png" width="30px" height="30px" onclick="bigmenu_on();" class="pointer" style="margin:10px 0px 10px 0px"> <!-- 전체메뉴목록 이미지 -->
+	</div> <!-- 모바일용 전체검색 끝-->
+	
+	<div id="sitename_m">
+		<a href="getAllSangpum.do" id=main_sitename>sitename</a>
+	</div>
+	
+	<div id=search_m> <!-- 모바일용 검색버튼 -->
+		<img src="../image/search.png" width="25px" height="25px" class="pointer" style="margin:12px 0px 12px 0px" onclick="search_open();">
+	</div> <!-- 모바일용 검색버튼 끝 -->
+	
+	<div id="shopcart_m"> <!-- 모바일용 장바구니 -->
+		<img src="../image/cart.png" width="30px" height="30px" class="pointer" style="margin:10px 0px 10px 0px">
+		<input type="button" id=cartbutton_m value="1" style="display:<%=login_yes%>"> <!-- 장바구니 몇개담겨있는지 숫자버튼 -->
+	</div> <!-- 모바일용 장바구니 끝 -->
+
+
+<form action="#" method="post" id=homeform>
+
+	<div id="sitename">
+		<a href="getAllSangpum.do" id=sitename_pc>sitename</a>
+	</div>
+	
+	<div id=mainselect>
+		<select name = "select" id="select">
+			<option value="전체" selected>전체
+			<option value="주제1">큰주제1
+			<option value="주제2">큰주제2
+			<option value="주제3">큰주제3
+			<option value="주제4">큰주제4
+			<option value="주제5">큰주제5
+		</select>
+	</div>
+	
+	<div id=mainsearch>
+		<input type="text" name="search" id="search1" placeholder ="찾고 싶은 상품을 검색해보세요!">
+	</div>
+	
+	<div id=search_submit>
+		<input type="image" onclick="self.location='#'" src="../image/cart.png" border="0"
+			width ="25px" height="25px"/> <!-- 확인버튼 -->
+	</div>
+	</form>
+	
+	<div id=main_mypage style="display:<%=login_yes%>">
+		&nbsp;&nbsp;&nbsp;<a href="../UserInfo/buyAllInfo.jsp" class=smalllink>
+		<img src="../image/dance.png" width="50px" height="50px"><br>
+		<b>마이페이지</b></a> <!-- 마이페이지 -->
+	</div>
+	
+	<div id=shopcart style="display:<%=login_yes%>">
+		&nbsp;&nbsp;<a href="getAllCart.do" class=smalllink><img src="../image/cart.png" width="50px" height="50px"><br>
+		<b>장바구니</b></a> <!-- 장바구니 -->
+		<input type="button" id=cartbutton value="1" style="display:<%=login_yes%>"> <!-- 장바구니 몇개담겨있는지 숫자버튼 -->
+		
+	</div>
+</div>
+
+<div id="search_div_m" style="display:none;"> <!-- 모바일용 검색창 -->
+	<input type="text" id="search_bar_m"  placeholder ="찾고 싶은 상품을 검색해보세요!">
+	<input type="button" id="search_button_m" value="닫기" onclick="search_close();">
+</div>
+
+<div id="mainbar">	<!--  리스트 박스 클릭시 onChange 이벤트 사용 -->
+	<table cellspacing="10" cellpadding="10px" id="mainbar_table">
+		<tr>
+			<td>
+				<img src="../image/menu.png" width="40px" height="50px" onmouseover="bigmenu_on();" class="pointer"> <!-- 전체메뉴목록 이미지 -->
+			</td>
+			<td>
+				<select name = "select1" id="select1" onmouseover="mousein('select1');" onmouseout="mouseout('select1');">
+					<option value="전체" selected>전체
+					<option value="주제1" onclick="">주제1
+					<option value="주제2">주제2
+					<option value="주제3">주제3
+					<option value="주제4">주제4
+					<option value="주제5">주제5
+				</select>
+			</td>
+			<td>
+				<select name = "select2" id="select2" onmouseover="mousein('select2');" onmouseout="mouseout('select2');">
+					<option value="전체" selected>전체
+					<option value="주제1">주제1
+					<option value="주제2">주제2
+					<option value="주제3">주제3
+					<option value="주제4">주제4
+					<option value="주제5">주제5
+				</select>
+			</td>
+			<td>
+				<select name = "select3" id="select3" onmouseover="mousein('select3');" onmouseout="mouseout('select3');">
+					<option value="전체" selected>전체
+					<option value="주제1">주제1
+					<option value="주제2">주제2
+					<option value="주제3">주제3
+					<option value="주제4">주제4
+					<option value="주제5">주제5
+				</select>
+			</td>
+			<td>
+				<select name = "select4" id="select4" onmouseover="mousein('select4');" onmouseout="mouseout('select4');">
+					<option value="전체" selected>전체
+					<option value="주제1">주제1
+					<option value="주제2">주제2
+					<option value="주제3">주제3
+					<option value="주제4">주제4
+					<option value="주제5">주제5
+				</select>
+			</td>
+						<td>
+				<select name = "select5" id="select5" onmouseover="mousein('select5');" onmouseout="mouseout('select5');">
+					<option value="전체" selected>전체
+					<option value="주제1">주제1
+					<option value="주제2">주제2
+					<option value="주제3">주제3
+					<option value="주제4">주제4
+					<option value="주제5">주제5
+				</select>
+			</td>
+			
+		</tr>
+	</table>
+</div>
+<!-- 전체메뉴목록 div -->
+<div id=allmenu onmouseleave="allmenu_out();">
+	<div id=bigmenu style="display:none">
+		<div id=bigmenu1 onmouseover="smallmenu_on('bigmenu1','smallmenu1');" onmouseout="smallmenu_out('bigmenu1')" class="pointer">
+			<div class="big">
+				큰주제1
+			</div>
+		</div>
+		<div id=bigmenu2 onmouseover="smallmenu_on('bigmenu2','smallmenu2');" onmouseout="smallmenu_out('bigmenu2')" class="pointer">
+			<div class="big">
+				큰주제2
+			</div>
+		</div>
+		<div id=bigmenu3 onmouseover="smallmenu_on('bigmenu3','smallmenu3');" onmouseout="smallmenu_out('bigmenu3')" class="pointer">
+			<div class="big">
+				큰주제3
+			</div>
+		</div>
+		<div id=bigmenu4 onmouseover="smallmenu_on('bigmenu4','smallmenu4');" onmouseout="smallmenu_out('bigmenu4')" class="pointer">
+			<div class="big">
+				큰주제4
+			</div>
+		</div>
+		<div id=bigmenu5 onmouseover="smallmenu_on('bigmenu5','smallmenu5');" onmouseout="smallmenu_out('bigmenu5')" class="pointer">
+			<div class="big">
+				큰주제5
+			</div>
+		</div>
+	</div>
+	
+	<div id=smallmenu1 style="display:none">
+		<table id=smallmenu_table>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s1" onmouseover="imsi_on('s1');" onmouseout="imsi_out('s1');">소주제1</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s2" onmouseover="imsi_on('s2');" onmouseout="imsi_out('s2');">소주제1</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s3" onmouseover="imsi_on('s3');" onmouseout="imsi_out('s3');">소주제1</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s4" onmouseover="imsi_on('s4');" onmouseout="imsi_out('s4');">소주제1</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s5" onmouseover="imsi_on('s5');" onmouseout="imsi_out('s5');">소주제1</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s6" onmouseover="imsi_on('s6');" onmouseout="imsi_out('s6');">소주제1</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s7" onmouseover="imsi_on('s7');" onmouseout="imsi_out('s7');">소주제1</a></div></td></tr>
+		</table>
+	</div>
+	
+	<div id=smallmenu2 style="display:none">
+		<table id=smallmenu_table>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s1" onmouseover="imsi_on('s1');" onmouseout="imsi_out('s1');">소주제2</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s2" onmouseover="imsi_on('s2');" onmouseout="imsi_out('s2');">소주제2</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s3" onmouseover="imsi_on('s3');" onmouseout="imsi_out('s3');">소주제2</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s4" onmouseover="imsi_on('s4');" onmouseout="imsi_out('s4');">소주제2</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s5" onmouseover="imsi_on('s5');" onmouseout="imsi_out('s5');">소주제2</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s6" onmouseover="imsi_on('s6');" onmouseout="imsi_out('s6');">소주제2</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s7" onmouseover="imsi_on('s7');" onmouseout="imsi_out('s7');">소주제2</a></div></td></tr>
+		</table>
+	</div>
+	
+	<div id=smallmenu3 style="display:none">
+		<table id=smallmenu_table>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s1" onmouseover="imsi_on('s1');" onmouseout="imsi_out('s1');">소주제3</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s2" onmouseover="imsi_on('s2');" onmouseout="imsi_out('s2');">소주제3</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s3" onmouseover="imsi_on('s3');" onmouseout="imsi_out('s3');">소주제3</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s4" onmouseover="imsi_on('s4');" onmouseout="imsi_out('s4');">소주제3</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s5" onmouseover="imsi_on('s5');" onmouseout="imsi_out('s5');">소주제3</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s6" onmouseover="imsi_on('s6');" onmouseout="imsi_out('s6');">소주제3</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s7" onmouseover="imsi_on('s7');" onmouseout="imsi_out('s7');">소주제3</a></div></td></tr>
+		</table>
+	</div>
+	
+	<div id=smallmenu4 style="display:none">
+		<table id=smallmenu_table>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s1" onmouseover="imsi_on('s1');" onmouseout="imsi_out('s1');">소주제4</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s2" onmouseover="imsi_on('s2');" onmouseout="imsi_out('s2');">소주제4</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s3" onmouseover="imsi_on('s3');" onmouseout="imsi_out('s3');">소주제4</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s4" onmouseover="imsi_on('s4');" onmouseout="imsi_out('s4');">소주제4</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s5" onmouseover="imsi_on('s5');" onmouseout="imsi_out('s5');">소주제4</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s6" onmouseover="imsi_on('s6');" onmouseout="imsi_out('s6');">소주제4</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s7" onmouseover="imsi_on('s7');" onmouseout="imsi_out('s7');">소주제4</a></div></td></tr>
+		</table>
+	</div>
+	
+	<div id=smallmenu5 style="display:none">
+		<table id=smallmenu_table>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s1" onmouseover="imsi_on('s1');" onmouseout="imsi_out('s1');">소주제5</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s2" onmouseover="imsi_on('s2');" onmouseout="imsi_out('s2');">소주제5</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s3" onmouseover="imsi_on('s3');" onmouseout="imsi_out('s3');">소주제5</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s4" onmouseover="imsi_on('s4');" onmouseout="imsi_out('s4');">소주제5</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s5" onmouseover="imsi_on('s5');" onmouseout="imsi_out('s5');">소주제5</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s6" onmouseover="imsi_on('s6');" onmouseout="imsi_out('s6');">소주제5</a></div></td></tr>
+			<tr><td><div class=small><a href="#" class="smalllink" id="s7" onmouseover="imsi_on('s7');" onmouseout="imsi_out('s7');">소주제5</a></div></td></tr>
+		</table>
+	</div>
+	
+</div>
+
+	<div style="display:<%=login_yes%>">
+		<jsp:include page="baguni.jsp"/> <!-- 오른쪽 바구니 jsp 인클루드 -->
+	</div>
+</header>
+
+</body>
+
+</html>
