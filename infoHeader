@@ -1,45 +1,82 @@
 <%@page import="shoppingVO.CustomerVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-	<%
-		CustomerVO login_check = (CustomerVO)session.getAttribute("login");
-	%>
-	
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="../css/infoHeader.css" />
-<title>Insert title here</title>
+<title>개인정보확인</title>
 <style>
 @media all and (max-width: 360px) { /* 320px 이상은 모바일 */
-	body {
-		background: #FFFFDE;
+	#header1 {
+		position: fixed;
+		z-index: 300;
 	}
-	#h1 {
-		align-content: center;
-		width: 25%;
-		height: 50px;
-		background-color: #6799FF;
+	#center {
+		position: absolute;
+		top: 50px;
+		left: 0%;
+		width: 360px;
+		height: 1000px;
 	}
-	#h2 {
-		align-content: center;
-		width: 25%;
-		height: 50px;
-		background-color: #6799FF;
+	#bg1 {
+		position: absolute;
+		top: 0px;
+		left: 0%;
+		width: 100%;
+		height: 159px;
 	}
-	#h3 {
-		align-content: center;
-		width: 25%;
-		height: 50px;
-		background-color: #6799FF;
+	#header2 {
+		position: absolute;
+		top: 0px;
+		left: 0%;
+		width: 100%;
 	}
-	#h4 {
-		align-content: center;
-		width: 25%;
+	#h11 {
+		position: absolute;
+		top: 50px;
+		left: 2.4%;
+	}
+	#divid1 {
+		position: absolute;
+		top: 100px;
+		left: 0px;
+		width: 360px;
 		height: 50px;
-		background-color: #6799FF;
+		border-top: 2px solid #BDBDBD;
+		border-bottom: 2px solid #BDBDBD;
+	}
+	#sp1 {
+		float: left;
+		font-size: 25px;
+		width: 100px;
+	}
+	#sp2 {
+		float: left;
+		font-size: 20px;
+		color: red;
+	}
+	#divpw1 {
+		position: absolute;
+		left: 0px;
+		top: 150px;
+		width: 360px;
+		height: 80px;
+		border-bottom: 2px solid #BDBDBD;
+	}
+	#sp3 {
+		float: left;
+		font-size: 25px;
+		width: 150px;
+	}
+	#divbutton1 {
+		position: absolute;
+		left: 22%;
+		top: 100px;
+	}
+	#footer {
+		position: absolute;
+		top: 370px;
 	}
 }
 
@@ -47,61 +84,129 @@
 	body {
 		background: #FFFFDE;
 	}
-	#h1 {
-		align-content: center;
-		width: 25%;
-		height: 100px;
-		background-color: #6799FF;
+	#header1 {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
 	}
-	#h2 {
-		align-content: center;
-		width: 25%;
-		height: 100px;
-		background-color: #6799FF;
+	#center {
+		position: absolute;
+		top: 215px;
+		left: 22%;
+		width: 1000px;
+		height: 600px;
 	}
-	#h3 {
-		align-content: center;
-		width: 25%;
-		height: 100px;
-		background-color: #6799FF;
+	#bg1 {
+		position: absolute;
+		top: 11px;
+		left: 0%;
+		width: 100%;
+		height: 600px;
+		background-color: white;
 	}
-	#h4 {
-		align-content: center;
-		width: 25%;
-		height: 100px;
-		background-color: #6799FF;
+	#header2 {
+		position: absolute;
+		top: 10px;
+		left: 0%;
+		width: 100%;
+	}
+	#h11 {
+		position: absolute;
+		top: 170px;
+		left: 2.4%;
+	}
+	#divid1 {
+		position: absolute;
+		left: 1%;
+		width: 1000px;
+		height: 50px;
+		top: 280px;
+		border-top: 2px solid #BDBDBD;
+		border-bottom: 2px solid #BDBDBD;
+	}
+	#sp1 {
+		float: left;
+		font-size: 25px;
+		width: 150px;
+	}
+	#sp2 {
+		float: left;
+		font-size: 20px;
+		color: red;
+	}
+	#divpw1 {
+		position: absolute;
+		left: 1%;
+		top: 330px;
+		width: 1000px;
+		height: 80px;
+		border-bottom: 2px solid #BDBDBD;
+	}
+	#sp3 {
+		float: left;
+		font-size: 25px;
+		width: 150px;
+	}
+	#divbutton1 {
+		position: absolute;
+		left: 35%;
+		top: 100px;
+	}
+	#footer {
+		margin: 0%;
+		padding: 0%;
+		position: absolute;
+		top: 800px;
+		left: 0%;
+		width: 100%;
+		background-color: white;
 	}
 }
 </style>
-<script>
-	function mousein(id1){
-		document.getElementById(id1).style.backgroundColor = "white";
-		document.getElementById(id1).style.color = "black";
-	}
-	function mouseout(id1){
-		document.getElementById(id1).style.backgroundColor ="#6799FF";
-		document.getElementById(id1).style.color = "white";
-	}
-</script>
+<!-- <link rel="stylesheet" type="text/css" href="../css/userCheckInfo.css" /> -->
 </head>
-<body>
-	<div>
-		<table style="width: 100%;">
-			<tr>
-				<th id="h1" onmouseover="mousein('h1');" onmouseout="mouseout('h1');">
-				<a href="buyAllInfo.jsp?id=<%=login_check.getCustomerID() %>"
-					style="color: black; text-decoration: none;">주문조회</a></th>
-				<th id="h2" onmouseover="mousein('h2');" onmouseout="mouseout('h2');">
-				<a href="couponA.jsp?id=<%=login_check.getCustomerID() %>"
-					style="color: black; text-decoration: none;">보유 할인쿠폰</a></th>
-				<th id="h3" onmouseover="mousein('h3');" onmouseout="mouseout('h3');">
-				<a href="userCheckInfo.jsp?id=<%=login_check.getCustomerID() %>"
-					style="color: black; text-decoration: none;">개인정보확인/수정</a></th>
-				<th id="h4" onmouseover="mousein('h4');" onmouseout="mouseout('h4');">
-				<a href="jimlistInfo.jsp?id=<%=login_check.getCustomerID() %>"
-					style="color: black; text-decoration: none;">찜 리스트</a></th>
-			</tr>
-		</table>
+<body style="background-color: #FFFFDE;">
+	<%
+		CustomerVO check = (CustomerVO)session.getAttribute("login");
+	%>
+	
+	<div id="header1">
+		<jsp:include page="../include/header.jsp"></jsp:include></div>
+	<div id="center">
+		<div id="bg1">
+			<div id="header2">
+				<jsp:include page="infoHeader.jsp"></jsp:include>
+			</div>
+
+			<h1 id="h11">개인정보확인</h1>
+			<form action="userCheck.do" method="post">
+				<div id="divid1">
+					<span id="sp1"> 아이디: </span> <span id="sp2"> <b>${id }</b>
+					</span>
+				<input type="text" name="id" value="${id }" style="display: none;" />
+				</div>
+
+				<div id="divpw1">
+					<span id="sp3"> 비밀번호:<input type="password" name="pw"
+						style="width: 200px; height: 30px; border: 2px solid black;" />
+					</span>
+					<div id="divbutton1">
+						<input type="submit" value="확인" style="width: 80px; height: 30px;" />
+						&nbsp;&nbsp; <input type="reset" value="취소"
+							style="width: 80px; height: 30px;" />
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
+
+	<div id="footer">
+		<jsp:include page="../include/footer.jsp"></jsp:include>
+	</div>
+
+
+
+
 </body>
 </html>
