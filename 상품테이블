@@ -1,0 +1,37 @@
+insert into SANGPUM values('a1','싱싱한사과,1박스(18개)',49000,30,'무공해,유기농 산지직송 제철사과 입니다.',28000,'1일','과일','apple.jpg');
+
+insert into SANGPUM values('a2','엄청노란 바나나,1송이',12000,60,'무공해,유기농 산지직송 제철바나나 입니다.',21000,'1일','과일','banana.jpg');
+
+insert into SANGPUM values('a3','테디베어,스몰사이즈',59000,20,'제봉장인이 만든 테디베어입니다. 마감처리가 완벽함',12000,'3일','장난감, 인형','bear.jpg');
+
+insert into SANGPUM values('a4','가정용 자전거,옵션',139000,10,'일반적인 자전거입니다. 튼튼하고 다양한 옵션을 추가할 수 있습니다.',8000,'4일','탈것, 자전거','bicycle.png');
+
+insert into SANGPUM values('a5','경주용 자전거,색상',219000,10,'경주용,장거리주행용 자전거입니다.',11000,'4일','탈것, 자전거','bicycle2.png');
+
+insert into SANGPUM values('a6','티셔츠,검은색',18000,100,'부드러운 소재로 만들어진 티셔츠.',38000,'1일','옷, 상의','blank-t.png');
+
+insert into SANGPUM values('a7','백과사전,고급커버',69000,30,'고급가죽커버의 백과사전입니다.',7000,'2일','도서, 사전','book1.jpg');
+
+insert into SANGPUM values('a8','회중시계,kaja-1130',39900,40,'금색커버 회중시계입니다.',12000,'1일','시계','clock1.png');
+
+insert into SANGPUM values('a9','고급회중시계,saja-991',249000,10,'스위스 시계장인이 만든 수제시계.',38000,'7일','시계','clock2.jpg');
+
+insert into SANGPUM values('b1','양복,정장,영국제,',229000,30,'영국에서 건너온 본고장 양복',22000,'7일','옷, 양복','clothes.jpg');
+
+insert into SANGPUM values('b2','노란오리,소리남',9800,100,'여러 용도로 쓰이는 장난감 오리입니다.',41000,'1일','장난감, 인형','duck.jpg');
+
+insert into SANGPUM values('b3','자바완전정복',49000,70,'자바고수가 알려주는 자바고수가되는 비법 100가지 자바',26000,'3일','도서, 전문','book2.jpg');
+
+insert into SANGPUM values('b4','모자,중절모,악어가죽'70000,120,'중절모,4가지색상,수량 여유있음',22000,'4일','옷, 모자','hat1.jpg');
+
+insert into SANGPUM values('b5','보급형헤드셋,gg-100',29000,50,'보급형. 내구성 우수.',40000,'2일','전자,주변기기','headphones1.jpg');
+
+insert into SANGPUM values('b6','게이밍헤드셋,god-1',79000,30,'최고성능, 게이밍헤드셋,1년 무상as',35000,'5일','전자,주변기기','headphones2.jpg');
+
+insert into SANGPUM values('b7','오렌지주스,1묶음',14000,99,'제주 한라봉으로 만든 국산주스',25000,'4일','식료품, 음료','juice.jpg');
+
+insert into SANGPUM values('b8','레고,(11~16세용)',53000,40,'아이큐 발달에 좋은 레고세트. 밟지않게 주의',12000,'1일','장난감','lego.png');
+
+commit;
+
+select * from sangpum;
