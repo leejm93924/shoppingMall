@@ -18,6 +18,7 @@ create table sangpum_review (
     review_up number(8,0),
     review_date date,   
     foreign key(sangpum_number) references sangpum(sangpum_number)
+    on delete cascade
 );
 
 create table sangpum_ask (
@@ -27,8 +28,9 @@ create table sangpum_ask (
     secrets varchar(10),
     asking_date date,
     answer varchar(50),
-    answer_date date,
+    answer_date date,   
     foreign key(sangpum_number) references sangpum(sangpum_number)
+    on delete cascade
 );
 
 create table customer (
@@ -50,7 +52,7 @@ create table baesongji (
 create table jjim (
     customer_id varchar(20),
     sangpum_number varchar(20),    
-    primary key (customer_id, sangpumnumber),
+    primary key (customer_id, sangpum_number),
     foreign key (customer_id) references customer(customer_id),
     foreign key (sangpum_number) references sangpum(sangpum_number)    
 );
@@ -62,8 +64,10 @@ create table cart (
     sangpum_count number(2,0),
     sangpum_image varchar(30),
     sangpum_price number(10,0),
-    foreign key(customer_id) references customer(customer_id),
+    foreign key(customer_id) references customer(customer_id)
+    on delete cascade,
     foreign key(sangpum_number) references sangpum(sangpum_number)
+    on delete cascade
 );
 
 create table coupon (
@@ -72,6 +76,7 @@ create table coupon (
     discount varchar(6),
     customer_id varchar(20),
     foreign key(customer_id) references customer(customer_id)
+    on delete cascade
 );
 
 create table orders (
@@ -82,6 +87,7 @@ create table orders (
     customer_address varchar(20),
     order_confirm varchar(10),
     foreign key(sangpum_number) references sangpum(sangpum_number)
+    on delete cascade
 );
 
 create table manager(
