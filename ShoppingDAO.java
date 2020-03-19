@@ -127,6 +127,7 @@ public class ShoppingDAO {
 		}
 		pstmt.close();
 		con.close();
+		rs.close();
 		return flag;
 	}
 	
@@ -142,17 +143,17 @@ public class ShoppingDAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, name);
 			pstmt.setString(2, email);
-			rs = pstmt.executeQuery();			
+			rs = pstmt.executeQuery();	
+			while (rs.next()) {
+				searchName = rs.getString(1);
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		
-		while (rs.next()) {
-			searchName = rs.getString(1);
-		}
-		pstmt.close();
-		con.close();
 		return searchName;
 		
 	}
@@ -172,16 +173,18 @@ public class ShoppingDAO {
 			pstmt.setString(2, email);
 			pstmt.setString(3, id);
 			rs= pstmt.executeQuery();
+			while(rs.next()) {
+				searchMail = rs.getString("customer_email");
+			}		
+			rs.close();
+			pstmt.close();
+			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		while(rs.next()) {
-			searchMail = rs.getString("customer_email");
-		}		
-		pstmt.close();
-		con.close();
+		
 		return searchMail;
 		
 	}
@@ -841,6 +844,103 @@ public class ShoppingDAO {
 				e.printStackTrace();
 			}
 			return resultSet;
+		}
+		
+		// 회원이 자신의 이메일을 수정하는 메소드
+		public boolean updateEmail(String id, String newEmail) {
+			
+			String sql = "update customer"
+					+ " set customer_email=?"
+					+ " where customer_ID=?";
+			
+			try {
+				con = dataFactory.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, newEmail);
+				pstmt.setString(2, id);
+				pstmt.executeUpdate();
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+			
+			return true;
+		}
+		
+		// 회원이 자신의 휴대폰을 수정하는 메소드
+			public boolean updatePhone(String id, String newPhone) {
+				
+				String sql = "update customer"
+						+ " set customer_phone=?"
+						+ " where customer_ID=?";
+				
+				try {
+					con = dataFactory.getConnection();
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, newPhone);
+					pstmt.setString(2, id);
+					pstmt.executeUpdate();
+					pstmt.close();
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				}
+				
+				return true;
+			}
+			// 회원이 자신의 비밀번호를 수정하는 메소드
+					public boolean updatePW(String id, String pw, String newPW) {
+						
+						String sql = "update customer"
+								+ " set customer_password=?"
+								+ " where (customer_ID=? AND customer_password=?)";
+						
+						try {
+							con = dataFactory.getConnection();
+							pstmt = con.prepareStatement(sql);
+							pstmt.setString(1, newPW);
+							pstmt.setString(2, id);
+							pstmt.setString(3, pw);
+							pstmt.executeUpdate();
+							pstmt.close();
+							con.close();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							return false;
+						}
+						
+						return true;
+					}
+			public CustomerVO getCustomerInfo(String id) {//////
+			CustomerVO tv = null;
+			String sql = "SELECT * FROM CUSTOMER where customer_id = ?";
+			try {
+				con = dataFactory.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				rs = pstmt.executeQuery();
+				while(rs.next()){
+					String customer_id = rs.getString("customer_id");
+					String customer_password = rs.getString("customer_password");
+					String customer_name = rs.getString("customer_name");
+					Date customer_birth = rs.getDate("customer_birth");
+					String customer_phone = rs.getString("customer_phone");
+					String customer_email = rs.getString("customer_email");
+				
+					tv = new CustomerVO(customer_id, customer_password, customer_name, customer_birth,customer_phone, customer_email);
+				}
+				pstmt.close();
+				con.close();
+			}catch(SQLException e) {
+					e.printStackTrace();
+			}
+			return tv;
 		}
 		
 }
