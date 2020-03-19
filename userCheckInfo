@@ -167,7 +167,6 @@
 <!-- <link rel="stylesheet" type="text/css" href="../css/userCheckInfo.css" /> -->
 </head>
 <body style="background-color: #FFFFDE;">
-	
 	<%
 		CustomerVO check = (CustomerVO)session.getAttribute("login");
 	%>
