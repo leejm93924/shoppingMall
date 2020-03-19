@@ -1,0 +1,107 @@
+<%@page import="shoppingVO.CustomerVO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+	
+	<%
+		CustomerVO login_check = (CustomerVO)session.getAttribute("login");
+	%>
+	
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="../css/infoHeader.css" />
+<title>Insert title here</title>
+<style>
+@media all and (max-width: 360px) { /* 320px 이상은 모바일 */
+	body {
+		background: #FFFFDE;
+	}
+	#h1 {
+		align-content: center;
+		width: 25%;
+		height: 50px;
+		background-color: #6799FF;
+	}
+	#h2 {
+		align-content: center;
+		width: 25%;
+		height: 50px;
+		background-color: #6799FF;
+	}
+	#h3 {
+		align-content: center;
+		width: 25%;
+		height: 50px;
+		background-color: #6799FF;
+	}
+	#h4 {
+		align-content: center;
+		width: 25%;
+		height: 50px;
+		background-color: #6799FF;
+	}
+}
+
+@media all and (min-width: 400px) { /* 960px 이상은 PC */
+	body {
+		background: #FFFFDE;
+	}
+	#h1 {
+		align-content: center;
+		width: 25%;
+		height: 100px;
+		background-color: #6799FF;
+	}
+	#h2 {
+		align-content: center;
+		width: 25%;
+		height: 100px;
+		background-color: #6799FF;
+	}
+	#h3 {
+		align-content: center;
+		width: 25%;
+		height: 100px;
+		background-color: #6799FF;
+	}
+	#h4 {
+		align-content: center;
+		width: 25%;
+		height: 100px;
+		background-color: #6799FF;
+	}
+}
+</style>
+<script>
+	function mousein(id1){
+		document.getElementById(id1).style.backgroundColor = "white";
+		document.getElementById(id1).style.color = "black";
+	}
+	function mouseout(id1){
+		document.getElementById(id1).style.backgroundColor ="#6799FF";
+		document.getElementById(id1).style.color = "white";
+	}
+</script>
+</head>
+<body>
+	<div>
+		<table style="width: 100%;">
+			<tr>
+				<th id="h1" onmouseover="mousein('h1');" onmouseout="mouseout('h1');">
+				<a href="buyAllInfo.jsp?id=<%=login_check.getCustomerID() %>"
+					style="color: black; text-decoration: none;">주문조회</a></th>
+				<th id="h2" onmouseover="mousein('h2');" onmouseout="mouseout('h2');">
+				<a href="couponA.jsp?id=<%=login_check.getCustomerID() %>"
+					style="color: black; text-decoration: none;">보유 할인쿠폰</a></th>
+				<th id="h3" onmouseover="mousein('h3');" onmouseout="mouseout('h3');">
+				<a href="userCheckInfo.jsp?id=<%=login_check.getCustomerID() %>"
+					style="color: black; text-decoration: none;">개인정보확인/수정</a></th>
+				<th id="h4" onmouseover="mousein('h4');" onmouseout="mouseout('h4');">
+				<a href="jimlistInfo.jsp?id=<%=login_check.getCustomerID() %>"
+					style="color: black; text-decoration: none;">찜 리스트</a></th>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
