@@ -827,9 +827,9 @@ public class ShoppingDAO {
 			ArrayList<SangpumVO> resultSet = new ArrayList<SangpumVO>();
 			try {
 				ArrayList<SangpumVO> list = allProductSearch();
-				System.out.println(list.size());
+				/*System.out.println(list.size());
 				System.out.println(pageNum);
-				System.out.println(itemNum);
+				System.out.println(itemNum);*/
 			
 				
 				for(int i = (pageNum - 1) * itemNum; i < ((pageNum-1) * itemNum) + itemNum; i++) {
@@ -894,29 +894,37 @@ public class ShoppingDAO {
 				return true;
 			}
 			// 회원이 자신의 비밀번호를 수정하는 메소드
-					public boolean updatePW(String id, String pw, String newPW) {
+					public boolean updatePW(String id, String pw, String newPW, String newPW2) {
 						
 						String sql = "update customer"
 								+ " set customer_password=?"
 								+ " where (customer_ID=? AND customer_password=?)";
-						
-						try {
-							con = dataFactory.getConnection();
-							pstmt = con.prepareStatement(sql);
-							pstmt.setString(1, newPW);
-							pstmt.setString(2, id);
-							pstmt.setString(3, pw);
-							pstmt.executeUpdate();
-							pstmt.close();
-							con.close();
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							return false;
+						int tmp=0;
+						boolean flag = false;
+						if (newPW.equals(newPW2)) {
+							try {
+								con = dataFactory.getConnection();
+								pstmt = con.prepareStatement(sql);
+								pstmt.setString(1, newPW);
+								pstmt.setString(2, id);
+								pstmt.setString(3, pw);
+								tmp = pstmt.executeUpdate();
+								pstmt.close();
+								con.close();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 						
-						return true;
+						if (tmp == 0)
+							flag = false;
+						else
+							flag = true;
+						
+						return flag;
 					}
+					
 			public CustomerVO getCustomerInfo(String id) {//////
 			CustomerVO tv = null;
 			String sql = "SELECT * FROM CUSTOMER where customer_id = ?";
@@ -935,6 +943,7 @@ public class ShoppingDAO {
 				
 					tv = new CustomerVO(customer_id, customer_password, customer_name, customer_birth,customer_phone, customer_email);
 				}
+				
 				pstmt.close();
 				con.close();
 			}catch(SQLException e) {
@@ -942,5 +951,25 @@ public class ShoppingDAO {
 			}
 			return tv;
 		}
+			
+			public int getAllSangpum() throws SQLException {
+				
+				String sql = "select count(*) from sangpum";				
+				int allCount = 0;
+				
+				con = dataFactory.getConnection();
+				pstmt = con.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					allCount = rs.getInt(1);
+				}
+				
+				pstmt.close();
+				con.close();
+				return allCount;
+			}
+
+			
 		
 }
